@@ -3,13 +3,22 @@ import { ServerState, You, Proposal, VoteChoice, Settings } from '../types'
 type Listener = (s: Partial<ServerState>) => void
 type LiveListener = (l: string[]) => void
 type SessionListener = (s: ServerState['session']) => void
-type SoundListener = (kind: 'pass' | 'reject') => void
+type SoundListener = (kind: 'pass' | 'reject' | 'start' | 'gavel') => void
 type YouListener = (y: You) => void
 type ReminderListener = (at: number, title: string) => void
 type InterludeListener = (p: { seconds: number; text: string }) => void
 type PreSessionListener = (p: { seconds: number; text: string }) => void
 type EndingListener = (s: any) => void
-
+type EndingSummary = {
+  total: number; passed: number; rejected: number;
+  totalMs: number; avgMs: number;
+  items: Array<{
+    id: string; title: string; author: string;
+    outcome: 'passed'|'rejected'; rounds: number;
+    totalVotingMs: number; acceptCount: number; rejectCount: number;
+  }>;
+  fastest?: any; slowest?: any;
+};
 
 class WSService {
   ws?: WebSocket
@@ -51,6 +60,7 @@ class WSService {
 
     socket.onmessage = (ev) => {
       const msg = JSON.parse(ev.data)
+      console.log('[ws] incoming:', msg.type, msg)
       if (msg.type === 'welcome') {
         this.state = msg.state
         this.you = msg.you
@@ -78,6 +88,7 @@ class WSService {
       } else if (msg.type === 'preSession') {
         this.preSessionListeners.forEach(cb => cb({ seconds: msg.seconds, text: msg.text }))
       } else if (msg.type === 'ending') {
+        console.log('[ws] ending', msg.summary)
         this.endingListeners.forEach(cb => cb(msg.summary))
       }
 

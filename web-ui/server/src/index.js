@@ -77,9 +77,13 @@ function pickNextProposal() {
 }
 
 function startVotingSession() {
-  // do not start while interlude or pre-session countdown is active
   if (inInterlude() || preparingSession) return
   if (session && session.status === 'active') return
+
+  // Ensure a meeting exists
+  if (!meeting || meeting.status !== 'active') {
+    meeting = { status: 'active', startedAt: Date.now(), items: [] }
+  }
 
   const proposal = pickNextProposal()
   if (!proposal) return
@@ -103,11 +107,11 @@ function startVotingSession() {
 
 function endSession(reason) {
   if (!session) return
+  console.log('endSession',reason)
   session.status = 'ended'
   session.reason = reason
   broadcast({ type: 'session', session })
   session = null
-
   if (reason === 'timeout') {
     if (meeting && meeting.status === 'active') {
       meeting.status = 'ended'
@@ -400,12 +404,11 @@ wss.on('connection', (socket) => {
             text: 'Loading next proposal / Φόρτωση επόμενης πρότασης...'
           })
           setTimeout(() => {
-            startSession()
+            startVotingSession()
           }, secs * 1000)
         } else {
           endSession('completed')
         }
-
       } else if (msg.type === 'updateSettings') {
         if (myName?.toLowerCase() !== 'alex') return
         const patch = { ...msg.settings }

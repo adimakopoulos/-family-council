@@ -343,11 +343,6 @@ function SessionTab({ state, you }:{ state: ServerState, you: You}) {
       setNewEventDate('')
   }, [session?.proposalId])
 
-
-
-
-
-
   if (!session || session.status !== 'active') {
     return (
       <div className="mx-auto max-w-4xl px-4 mt-6">
@@ -485,13 +480,13 @@ export default function App() {
 
 
 
-    useEffect(() => {
-      if (!preSession) return
-      const t = setInterval(() => {
-        if (Date.now() >= preSession.until) { setPreSession(null); clearInterval(t) }
-      }, 200)
-      return () => clearInterval(t)
-    }, [preSession])
+  useEffect(() => {
+    if (!preSession) return;
+    const timer = setInterval(() => {
+      if (Date.now() >= preSession.until) { setPreSession(null); clearInterval(timer); }
+    }, 200);
+    return () => clearInterval(timer);
+  }, [preSession]);
 
   useEffect(()=>{
     if (Notification && Notification.permission === 'default') {
@@ -499,15 +494,12 @@ export default function App() {
     }
   }, [])
   useEffect(() => {
-    if (!interlude) return
-    const t = setInterval(() => {
-      if (Date.now() >= interlude.until) {
-        setInterlude(null)
-        clearInterval(t)
-      }
-    }, 200)
-    return () => clearInterval(t)
-  }, [interlude])
+    if (!interlude) return;
+    const timer = setInterval(() => {
+      if (Date.now() >= interlude.until) { setInterlude(null); clearInterval(timer); }
+    }, 200);
+    return () => clearInterval(timer);
+  }, [interlude]);
 
   const beginSession = () => {
     const isVoting = Boolean(state?.session && state.session.status === 'active')
@@ -563,31 +555,10 @@ export default function App() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-brand-50/40 to-white">
       <Header live={live} you={you} />
-      {interlude && Date.now() < interlude.until && (
-                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/80 backdrop-blur">
-                      <div className="card p-8 text-center">
-                        <div className="animate-pulse text-lg font-semibold mb-2">
-                          Loading next proposal / Φόρτωση επόμενης πρότασης…
-                        </div>
-                        <div className="text-2xl font-bold">
-                          {Math.max(0, Math.ceil((interlude.until - Date.now()) / 1000))}s
-                        </div>
-                      </div>
-                    </div>
-                  )}
-      {preSession && Date.now() < preSession.until && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/80 backdrop-blur">
-          <div className="card p-8 text-center">
-            <div className="animate-pulse text-lg font-semibold mb-2">
-              {preSession.text}
-            </div>
-            <div className="text-2xl font-bold">
-              {Math.max(0, Math.ceil((preSession.until - Date.now()) / 1000))}s
-            </div>
-            <div className="text-xs text-slate-600 mt-1">Go to Active Session tab / Μετάβαση στην Ενεργή Συνεδρία</div>
-          </div>
-        </div>
-      )}
+
+
+
+      {/* ENDING first: takes precedence */}
       {ending && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/90 backdrop-blur">
           <div className="card p-6 max-w-3xl w-full">
@@ -630,6 +601,32 @@ export default function App() {
             <div className="mt-3 text-xs text-slate-500">
               Tip: Author comments reset the timer and add a round. / Τα σχόλια του συγγραφέα επανεκκινούν τον χρόνο και προσθέτουν γύρο.
             </div>
+          </div>
+        </div>
+      )}
+      {!ending && interlude && Date.now() < interlude.until && (
+                          <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/80 backdrop-blur">
+                            <div className="card p-8 text-center">
+                              <div className="animate-pulse text-lg font-semibold mb-2">
+                                {t('overlays.interlude')}
+                              </div>
+                              <div className="text-2xl font-bold">
+                                {Math.max(0, Math.ceil((interlude.until - Date.now()) / 1000))}s
+                              </div>
+                            </div>
+                          </div>
+                        )}
+
+      {!ending && preSession && Date.now() < preSession.until && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/80 backdrop-blur">
+          <div className="card p-8 text-center">
+            <div className="animate-pulse text-lg font-semibold mb-2">
+              {preSession.text}
+            </div>
+            <div className="text-2xl font-bold">
+              {Math.max(0, Math.ceil((preSession.until - Date.now()) / 1000))}s
+            </div>
+            <div className="text-xs text-slate-600 mt-1">Go to Active Session tab / Μετάβαση στην Ενεργή Συνεδρία</div>
           </div>
         </div>
       )}
