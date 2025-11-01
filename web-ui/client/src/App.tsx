@@ -8,6 +8,7 @@ import clsx from 'clsx'
 import { useTranslation } from 'react-i18next'
 import i18n from './i18n'
 import { enUS, el as elLocale } from 'date-fns/locale'
+import { celebratePass } from './confetti'
 
 export function dfLocale() {
   return i18n.language.startsWith('el') ? elLocale : enUS
@@ -15,11 +16,25 @@ export function dfLocale() {
 
 type TabKey =   'session' | 'proposals'| 'rankings'
 
-const PASS_BEEP = 'data:audio/wav;base64,UklGRqQAAABXQVZFZm10IBAAAAABAAEAESsAACJWAAACABAAZGF0YQwAAACAgICAj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+'
-const REJECT_BEEP = 'data:audio/wav;base64,UklGRoQAAABXQVZFZm10IBAAAAABAAEAESsAACJWAAACABAAZGF0YQwAAAA/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pw=='
-const START_BEEP = 'data:audio/wav;base64, UklGRoQAAABXQVZF...'     // short “get ready” ping
-const GAVEL = 'data:audio/wav;base64, UklGRtQAAABXQVZF...'          // percussive click-like
-// (Optionally: try to load /gavel.mp3 if you add a real file in client/public)
+
+// Prefer real files in /public/sounds; fall back to embedded beeps if loading fails.
+const FILE_SOUNDS: Record<'pass'|'reject'|'start'|'gavel', string> = {
+  pass:  '/sounds/pass.wav',
+  reject:'/sounds/reject.wav',
+  start: '/sounds/start.wav',
+  gavel: '/sounds/gavel.wav',
+};
+
+async function playSound(kind: 'pass'|'reject'|'start'|'gavel') {
+  try {
+    const a = new Audio(FILE_SOUNDS[kind]);
+    await a.play();
+  } catch (err) {
+    // Autoplay blocked or file missing. Check Network tab and browser gesture.
+    console.warn('Audio play failed:', err);
+  }
+}
+
 function StatusBadge({ status }: { status: Proposal['status'] }) {
   const { t } = useTranslation();             // <-- add this
   const styles: Record<string, string> = {
@@ -556,15 +571,13 @@ export default function App() {
       setState(s => ({ ...(s || {} as any), session: null }) as any)
       setTab('session') // optional
     })
-    ws.onSound(kind => {
-      let src = ''
-      if (kind === 'pass') src = PASS_BEEP
-      else if (kind === 'reject') src = REJECT_BEEP
-      else if (kind === 'start') src = START_BEEP
-      else if (kind === 'gavel') src = GAVEL
-
-      if (src) new Audio(src).play().catch(()=>{})
-    })
+    ws.onSound(async (kind) => {
+      playSound(kind as any);
+      if (kind === 'pass') {
+        // Confetti on pass
+        celebratePass();
+     }
+    });
     ws.onReminder((at, title)=>{
       const ms = at - Date.now()
       if (ms > 0) {
@@ -588,7 +601,27 @@ export default function App() {
   }, [name])
 
 
-
+  useEffect(() => {
+    const unlock = async () => {
+      try {
+        // Try to start and immediately stop a quiet audio to unlock
+        const a = new Audio(FILE_SOUNDS.start);
+        a.volume = 0;
+        await a.play().catch(() => {});
+        a.pause();
+        a.currentTime = 0;
+      } finally {
+        window.removeEventListener('pointerdown', unlock);
+      }
+    };
+    window.addEventListener('pointerdown', unlock, { once: true });
+    return () => window.removeEventListener('pointerdown', unlock);
+  }, []);
+  useEffect(() => {
+    if (interlude?.lastOutcome?.outcome === 'passed') {
+      celebratePass();
+    }
+  }, [interlude?.lastOutcome?.id]);
   useEffect(() => {
     if (!preSession) return;
     const timer = setInterval(() => {
