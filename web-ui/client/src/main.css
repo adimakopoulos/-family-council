@@ -1,0 +1,56 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+.card {
+  @apply bg-white rounded-2xl shadow-sm border border-slate-200;
+}
+
+.btn {
+  @apply inline-flex items-center justify-center rounded-xl px-4 py-2 font-medium border border-transparent transition;
+}
+
+.btn-primary {
+  @apply btn bg-brand-600 text-white hover:bg-brand-700;
+}
+
+.btn-secondary {
+  @apply btn bg-white text-slate-800 border-slate-200 hover:bg-slate-100;
+}
+
+.input {
+  @apply w-full rounded-xl border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand-300;
+}
+
+.label {
+  @apply text-sm font-medium text-slate-700;
+}
+
+
+
+
+/* Base look (adjust if you already have .input defined) */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .input { @apply w-full rounded-xl border border-slate-300 px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-500; }
+  .label { @apply text-xs font-medium text-slate-600; }
+  /* Explicit class for read-only inputs */
+  .input--readonly { @apply bg-slate-100 text-slate-600 border-dashed cursor-not-allowed focus:ring-0; }
+}
+
+/* If you prefer auto-detect: style any .input[readonly] */
+.input[readonly] {
+  background-color: rgb(241 245 249); /* slate-100 */
+  color: rgb(71 85 105);              /* slate-600 */
+  border-style: dashed;
+  cursor: not-allowed;
+}
+
