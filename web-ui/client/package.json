@@ -9,6 +9,7 @@
     "preview": "vite preview --port 5173 --strictPort"
   },
   "dependencies": {
+    "canvas-confetti": "^1.9.4",
     "clsx": "^2.1.1",
     "date-fns": "^3.6.0",
     "i18next": "^25.6.0",

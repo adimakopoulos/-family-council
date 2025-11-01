@@ -33,52 +33,27 @@
       }
     },
     {
-      "id": "p_1dsutx4x5we",
-      "title": "asd",
-      "description": "-",
-      "voteDeadline": "2025-11-01T19:31:00.000Z",
+      "id": "p_og27s1btwu8",
+      "title": "bcvdvgfdgf",
+      "description": "dgfdgfdgf",
+      "voteDeadline": "2025-11-01T21:04:00.000Z",
       "author": "alex",
       "status": "open",
-      "createdAt": 1762025475326,
-      "comments": [],
-      "stats": {
-        "rounds": 1,
-        "totalVotingMs": 0,
-        "firstStartedAt": 1762025478940
-      }
+      "createdAt": 1762031054674,
+      "comments": []
     }
   ],
   "users": {
     "alex": {
       "name": "alex",
-      "democracy": 15,
-      "tyrant": 0
-    },
-    "Sot": {
-      "name": "Sot",
-      "democracy": 0,
-      "tyrant": 0
-    },
-    "efi": {
-      "name": "efi",
-      "democracy": 5,
-      "tyrant": 40
-    },
-    "sot": {
-      "name": "sot",
-      "democracy": 5,
-      "tyrant": 0
-    },
-    "Alekos": {
-      "name": "Alekos",
-      "democracy": 10,
+      "democracy": 40,
       "tyrant": 0
     }
   },
   "settings": {
     "requiredMembers": 1,
     "countdownSeconds": 60,
-    "interludeSeconds": 1,
+    "interludeSeconds": 3,
     "preSessionSeconds": 3
   }
 }

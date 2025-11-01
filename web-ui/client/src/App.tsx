@@ -389,29 +389,88 @@ function SessionTab({ state, you }:{ state: ServerState, you: You}) {
     <div className="mx-auto max-w-4xl px-4 mt-6">
       <div className="card p-5">
 
+
+
         <div className="flex items-start justify-between gap-4">
-          <div>
-            <div className="text-sm text-slate-500">{t('session.voting')}</div>
-            <h3 className="text-xl font-semibold">{proposal?.title}</h3>
-            <p className="text-sm text-slate-600">{proposal?.description}</p>
-            <div className="text-xs text-slate-500 mt-1">{t('session.votesCast')}: <span className="font-medium">{cast}/{total}</span></div>
-            {everyoneVoted && <div className="text-xs text-slate-600 mt-1">{t('session.results')}: {votedDisplay}</div>}
+          <div className="min-w-0">
+            <div className="text-sm text-slate-500">
+              {t('session.voting') || 'Voting'}
+            </div>
+
+            {/* Title & Description clearly */}
+            <h3 className="mt-1 text-xl font-bold text-slate-900">{proposal?.title}</h3>
+            {proposal?.description ? (
+              <div className="mt-2 p-3 rounded-lg bg-slate-50 border text-sm text-slate-700 whitespace-pre-wrap break-words">
+                {proposal.description}
+              </div>
+            ) : null}
+
+            {/* Votes */}
+            <div className="mt-3 text-sm">
+              <span className="text-slate-600">
+                {t('session.votesCast') || 'Votes cast'}:
+              </span>{' '}
+              <span className="font-semibold">
+                {cast}/{total}
+              </span>
+            </div>
           </div>
-          <div className="text-right">
-            <div className="text-xs text-slate-500">{t('session.timeLeft')}</div>
-            <div className={clsx('text-2xl font-bold', remaining <= 10 ? 'text-red-600' : 'text-slate-800')}>{Math.floor(remaining/60)}:{String(remaining%60).padStart(2, '0')}</div>
+
+          {/* Time left */}
+          <div className="shrink-0 text-right">
+            <div className="text-xs text-slate-500">{t('session.timeLeft') || 'Time left'}</div>
+            <div className={clsx('text-2xl font-extrabold tracking-tight',
+              remaining <= 10 ? 'text-rose-600' : 'text-slate-900')}>
+              {Math.floor(remaining/60)}:{String(remaining%60).padStart(2,'0')}
+            </div>
           </div>
         </div>
 
-        <div className="mt-4 flex items-center gap-2">
-          <button className="btn-primary" onClick={()=>castVote('accept')}>{t('actions.accept') || 'Accept'}</button>
-          <button className="btn-secondary" onClick={()=>castVote('reject')}>{t('actions.reject') || 'Reject'}</button>
-          <div className="text-xs text-slate-600 ml-2">{t('session.yourVote')}: <span className="font-semibold">{yourVote || '—'}</span></div>
+        {/* Actions — neutral, equally emphasized */}
+        <div className="mt-5 flex items-center gap-3">
+          <button
+            className={clsx(
+              'px-6 py-3 rounded-xl border font-semibold transition w-36',
+              'bg-white text-slate-800 border-slate-300 hover:bg-emerald-50 hover:border-emerald-300',
+              yourVote === 'accept' && 'ring-2 ring-emerald-400'
+            )}
+            onClick={()=>castVote('accept')}
+          >
+            {t('actions.accept') || 'Accept'}
+          </button>
+
+          <button
+            className={clsx(
+              'px-6 py-3 rounded-xl border font-semibold transition w-36',
+              'bg-white text-slate-800 border-slate-300 hover:bg-rose-50 hover:border-rose-300',
+              yourVote === 'reject' && 'ring-2 ring-rose-400'
+            )}
+            onClick={()=>castVote('reject')}
+          >
+            {t('actions.reject') || 'Reject'}
+          </button>
+
+          <div className="text-sm text-slate-600 ml-2">
+            {t('session.yourVote') || 'Your vote'}:{' '}
+            <span className={clsx(
+              'font-semibold',
+              yourVote === 'accept' && 'text-emerald-700',
+              yourVote === 'reject' && 'text-rose-700'
+            )}>
+              {yourVote || '—'}
+            </span>
+          </div>
+
           <div className="ml-auto flex items-center gap-2">
-            <button className="btn bg-amber-600 text-white hover:bg-amber-700" onClick={()=>ws.tyrant('enforce')}>{t('actions.tyrantEnforce')}</button>
-            <button className="btn bg-rose-600 text-white hover:bg-rose-700" onClick={()=>ws.tyrant('veto')}>{t('actions.tyrantVeto')}</button>
+            <button className="btn bg-amber-600 text-white hover:bg-amber-700" onClick={()=>ws.tyrant('enforce')}>
+              {t('actions.tyrantEnforce') || 'Tyrant: Enforce'}
+            </button>
+            <button className="btn bg-rose-600 text-white hover:bg-rose-700" onClick={()=>ws.tyrant('veto')}>
+              {t('actions.tyrantVeto') || 'Tyrant: Veto'}
+            </button>
           </div>
         </div>
+
         {/* Author updates visible to everyone */}
         {proposal?.comments?.length ? (
           <div className="mt-5 border-t pt-4">
@@ -466,7 +525,11 @@ export default function App() {
   const [tab, setTab] = useState<TabKey>('session')
   const [you, setYou] = useState<You | null>(null)
   const [starting, setStarting] = useState(false)
-  const [interlude, setInterlude] = useState<{ text: string; until: number } | null>(null)
+  const [interlude, setInterlude] = useState<{
+    text: string
+    until: number
+    lastOutcome?: { id: string; title: string; outcome: 'passed' | 'rejected' } | null
+  } | null>(null)
   const [preSession, setPreSession] = useState<{ text: string; until: number } | null>(null)
   const [ending, setEnding] = useState<any | null>(null)
 
@@ -515,7 +578,11 @@ export default function App() {
       }
     })
     ws.onInterlude(p => {
-      setInterlude({ text: p.text, until: Date.now() + p.seconds * 1000 })
+      setInterlude({
+        text: p.text,
+        until: Date.now() + p.seconds * 1000,
+        lastOutcome: p.lastOutcome || null,
+      })
     })
     setConnected(true)
   }, [name])
@@ -647,17 +714,40 @@ export default function App() {
         </div>
       )}
       {!ending && interlude && Date.now() < interlude.until && (
-                          <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/80 backdrop-blur">
-                            <div className="card p-8 text-center">
-                              <div className="animate-pulse text-lg font-semibold mb-2">
-                                {t('overlays.interlude')}
-                              </div>
-                              <div className="text-2xl font-bold">
-                                {Math.max(0, Math.ceil((interlude.until - Date.now()) / 1000))}s
-                              </div>
-                            </div>
-                          </div>
-                        )}
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/80 backdrop-blur">
+          <div className="card p-8 text-center">
+
+            {/* Outcome pill + title */}
+            {interlude.lastOutcome && (
+              <div className="mb-3">
+                <div
+                  className={clsx(
+                    'inline-flex items-center gap-2 px-3 py-1 rounded-full border text-sm',
+                    interlude.lastOutcome.outcome === 'passed'
+                      ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
+                      : 'bg-rose-50 text-rose-700 border-rose-200'
+                  )}
+                >
+                  <span>{interlude.lastOutcome.outcome === 'passed' ? '✅' : '❌'}</span>
+                  <span className="font-semibold">
+                    {interlude.lastOutcome.outcome === 'passed' ? t('status.passed') : t('status.rejected')}
+                  </span>
+                </div>
+                <div className="mt-2 text-base font-medium">{interlude.lastOutcome.title}</div>
+              </div>
+            )}
+
+            {/* “Loading next…” label + countdown */}
+            <div className="animate-pulse text-sm text-slate-600 mb-1">
+              {t('overlays.interlude')}
+            </div>
+            <div className="text-2xl font-bold">
+              {Math.max(0, Math.ceil((interlude.until - Date.now()) / 1000))}s
+            </div>
+          </div>
+        </div>
+      )}
+
 
       {!ending && preSession && Date.now() < preSession.until && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/80 backdrop-blur">

@@ -154,37 +154,38 @@ function checkTimerTick() {
 }
 setInterval(checkTimerTick, 1000)
 
-function scheduleNextWithInterludeOrEnd() {
+// replace the whole function
+function scheduleNextWithInterludeOrEnd(lastOutcome) {
   const next = pickNextProposal()
-  if (!next) {
-    endSession('completed')
-    if (meeting && meeting.status === 'active') {
-      meeting.status = 'ended'
-      meeting.endedAt = Date.now()
-      broadcastEndingSummary()
-      meeting = null
-    }
-    return
-  }
-
-  // end current and enter interlude window
   const secs = Number(state.settings.interludeSeconds) || 5
+
   endSession('completed')
+
   interludeUntil = Date.now() + secs * 1000
   clearTimeout(interludeTimer)
   broadcast({
     type: 'interlude',
     seconds: secs,
-    text: 'Loading next proposal / Φόρτωση επόμενης πρότασης...'
+    text: 'Loading next proposal / Φόρτωση επόμενης πρότασης...',
+    lastOutcome: lastOutcome || null
   })
+
   interludeTimer = setTimeout(() => {
     interludeUntil = 0
-    startVotingSession()
+    if (next) {
+      startVotingSession()
+    } else {
+      // no more proposals → end meeting after interlude
+      if (meeting && meeting.status === 'active') {
+        meeting.status = 'ended'
+        meeting.endedAt = Date.now()
+        broadcastEndingSummary()
+        meeting = null
+      }
+    }
   }, secs * 1000)
 }
 
-
-setInterval(checkTimerTick, 1000)
 
 function pointsForPass(proposal, votes) {
   // unanimous accept -> author +10, every accepter +5
@@ -256,8 +257,9 @@ function resolveVotes() {
       })
     }
 
-    // Next proposal or end meeting
-    scheduleNextWithInterludeOrEnd()
+    // Next proposal or end meeting — pass outcome for interlude
+    const lastOutcome = { id: proposal.id, title: proposal.title, outcome: proposal.status }
+    scheduleNextWithInterludeOrEnd(lastOutcome)
   } else {
     // not unanimous → require author adjustment
     session.awaitingAuthorAdjust = true
@@ -386,8 +388,9 @@ wss.on('connection', (socket) => {
       } else if (msg.type === 'tyrant') {
         const action = msg.action // 'enforce' | 'veto'
         if (!session) return
-        const p = state.proposals.find(x=>x.id===session.proposalId)
+        const p = state.proposals.find(x => x.id === session.proposalId)
         if (!p) return
+
         // award tyrant points
         state.users[myName] = state.users[myName] || { name: myName, democracy: 0, tyrant: 0 }
         state.users[myName].tyrant += 20
@@ -404,23 +407,24 @@ wss.on('connection', (socket) => {
           broadcast({ type: 'state', patch: { proposals: state.proposals, users: state.users } })
           broadcast({ type: 'sound', kind: 'reject' })
         }
-        // next
-        const next = pickNextProposal()
-        if (next) {
-          const secs = Number(state.settings.interludeSeconds) || 5
-          console.warn("Loading next proposal secs: ",Number(state.settings.interludeSeconds))
-          endSession('completed')
-          broadcast({
-            type: 'interlude',
-            seconds: secs,
-            text: 'Loading next proposal / Φόρτωση επόμενης πρότασης...'
+
+        // ⬇️ REPLACEMENT STARTS HERE
+        if (meeting && meeting.status === 'active') {
+          const stats = (state.proposals.find(x => x.id === p.id)?.stats) || { rounds: 1, totalVotingMs: 0 }
+          meeting.items.push({
+            id: p.id,
+            title: p.title,
+            author: p.author,
+            outcome: p.status,
+            rounds: stats.rounds || 1,
+            totalVotingMs: stats.totalVotingMs || 0,
+            acceptCount: 0,
+            rejectCount: 0,
           })
-          setTimeout(() => {
-            startVotingSession()
-          }, secs * 1000)
-        } else {
-          endSession('completed')
         }
+
+        const lastOutcome = { id: p.id, title: p.title, outcome: p.status }
+        scheduleNextWithInterludeOrEnd(lastOutcome)
       } else if (msg.type === 'updateSettings') {
         if (myName?.toLowerCase() !== 'alex') return
         const patch = { ...msg.settings }

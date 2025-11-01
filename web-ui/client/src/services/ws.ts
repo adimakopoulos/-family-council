@@ -3,22 +3,39 @@ import { ServerState, You, Proposal, VoteChoice, Settings } from '../types'
 type Listener = (s: Partial<ServerState>) => void
 type LiveListener = (l: string[]) => void
 type SessionListener = (s: ServerState['session']) => void
-type SoundListener = (kind: 'pass' | 'reject' | 'start' | 'gavel') => void
+type SoundKind = 'pass' | 'reject' | 'start' | 'gavel'
+type SoundListener = (kind: SoundKind) => void
+
 type YouListener = (y: You) => void
 type ReminderListener = (at: number, title: string) => void
-type InterludeListener = (p: { seconds: number; text: string }) => void
+type InterludePayload = {
+  seconds: number
+  text: string
+  lastOutcome?: { id: string; title: string; outcome: 'passed' | 'rejected' } | null
+}
+type InterludeListener = (p: InterludePayload) => void
 type PreSessionListener = (p: { seconds: number; text: string }) => void
-type EndingListener = (s: any) => void
+type EndingListener = (s: EndingSummary) => void
+type EndingItem = {
+  id: string
+  title: string
+  author: string
+  outcome: 'passed' | 'rejected'
+  rounds: number
+  totalVotingMs: number
+  acceptCount: number
+  rejectCount: number
+}
 type EndingSummary = {
-  total: number; passed: number; rejected: number;
-  totalMs: number; avgMs: number;
-  items: Array<{
-    id: string; title: string; author: string;
-    outcome: 'passed'|'rejected'; rounds: number;
-    totalVotingMs: number; acceptCount: number; rejectCount: number;
-  }>;
-  fastest?: any; slowest?: any;
-};
+  total: number
+  passed: number
+  rejected: number
+  totalMs: number
+  avgMs: number
+  items: EndingItem[]
+  fastest?: EndingItem | null
+  slowest?: EndingItem | null
+}
 
 class WSService {
   ws?: WebSocket
@@ -84,8 +101,14 @@ class WSService {
       } else if (msg.type === 'toast') {
         alert(msg.text)
       } else if (msg.type === 'interlude') {
-        this.interludeListeners.forEach(cb => cb({ seconds: msg.seconds, text: msg.text }))
-      } else if (msg.type === 'preSession') {
+        this.interludeListeners.forEach(cb =>
+          cb({
+            seconds: msg.seconds,
+            text: msg.text,
+            lastOutcome: msg.lastOutcome ?? null
+          })
+        )
+      }else if (msg.type === 'preSession') {
         this.preSessionListeners.forEach(cb => cb({ seconds: msg.seconds, text: msg.text }))
       } else if (msg.type === 'ending') {
         console.log('[ws] ending', msg.summary)
