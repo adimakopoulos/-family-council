@@ -557,56 +557,52 @@ export default function App() {
   const [ending, setEnding] = useState<any | null>(null)
 
 
-  useEffect(()=>{
+  useEffect(() => {
     if (!name) return
     ws.connect(name)
-    ws.onLive(setLive)
-    ws.onState(patch => setState(s => ({...(s||{} as any), ...patch}) as any))
-    ws.onYou(setYou)
-    ws.onSession(sess => {
-      // Keep exactly what server sends; UI will hide ended sessions itself
-      setState(s => ({ ...(s || {} as any), session: sess }) as any)
-      setStarting(false)
-      // Optional: jump users to the Session tab when a new session becomes active
-      if (sess && sess.status === 'active') setTab('session')
-    })
-    ws.onPreSession(p => {
-      setPreSession({ text: p.text, until: Date.now() + p.seconds * 1000 })
-    })
 
-    ws.onEnding(summary => {
-      setEnding(summary)
-      setState(s => ({ ...(s || {} as any), session: null }) as any)
-      setTab('session') // optional
-    })
-    ws.onSound(async (kind) => {
-      playSound(kind as any);
-      if (kind === 'pass') {
-        // Confetti on pass
-        celebratePass();
-     }
-    });
-    ws.onReminder((at, title)=>{
-      const ms = at - Date.now()
-      if (ms > 0) {
-        setTimeout(()=>{
+    const unsubs = [
+      ws.onLive(setLive),
+      ws.onState(patch => setState(s => ({ ...(s || {} as any), ...patch }) as any)),
+      ws.onYou(setYou),
+      ws.onSession(sess => {
+        setState(s => ({ ...(s || {} as any), session: sess }) as any)
+        setStarting(false)
+        if (sess && sess.status === 'active') setTab('session')
+      }),
+      ws.onPreSession(p => setPreSession({ text: p.text, until: Date.now() + p.seconds * 1000 })),
+      ws.onInterlude(p => setInterlude({
+        text: p.text,
+        until: Date.now() + p.seconds * 1000,
+        lastOutcome: p.lastOutcome || null,
+      })),
+      ws.onEnding(summary => {
+        setEnding(summary)
+        setState(s => ({ ...(s || {} as any), session: null }) as any)
+        setTab('session')
+      }),
+      ws.onSound(async (kind) => {
+            playSound(kind as any);
+            if (kind === 'pass') {
+              // Confetti on pass
+              celebratePass();
+           }
+          }),
+      ws.onReminder((at, title) => {
+        const ms = at - Date.now()
+        if (ms > 0) setTimeout(() => {
           if (Notification.permission === 'granted') {
             new Notification('Event Reminder / Υπενθύμιση Εκδήλωσης', { body: title })
           } else {
             alert('Event Reminder: ' + title)
           }
         }, ms)
-      }
-    })
-    ws.onInterlude(p => {
-      setInterlude({
-        text: p.text,
-        until: Date.now() + p.seconds * 1000,
-        lastOutcome: p.lastOutcome || null,
-      })
-    })
-    setConnected(true)
+      }),
+    ]
+
+    return () => unsubs.forEach(u => u())
   }, [name])
+
 
 
   useEffect(() => {

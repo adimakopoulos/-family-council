@@ -4,14 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="96169513-0ed6-4815-8c8b-f6b36886ee56" name="Changes" comment="sound effect and confetti update">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    <list default="true" id="96169513-0ed6-4815-8c8b-f6b36886ee56" name="Changes" comment="sound values, read me updated, easy deploy">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web-ui/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/web-ui/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web-ui/client/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/web-ui/client/src/App.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web-ui/client/src/confetti.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web-ui/client/src/confetti.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web-ui/client/src/services/ws.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web-ui/client/src/services/ws.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web-ui/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/web-ui/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web-ui/server/data/state.json" beforeDir="false" afterPath="$PROJECT_DIR$/web-ui/server/data/state.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -132,7 +128,15 @@
       <option name="project" value="LOCAL" />
       <updated>1762035639072</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="sound values, read me updated, easy deploy">
+      <option name="closed" value="true" />
+      <created>1762037673719</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1762037673719</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -143,6 +147,7 @@
     <MESSAGE value="git ignore" />
     <MESSAGE value="interlude time overlay change to show result" />
     <MESSAGE value="sound effect and confetti update" />
-    <option name="LAST_COMMIT_MESSAGE" value="sound effect and confetti update" />
+    <MESSAGE value="sound values, read me updated, easy deploy" />
+    <option name="LAST_COMMIT_MESSAGE" value="sound values, read me updated, easy deploy" />
   </component>
 </project>
