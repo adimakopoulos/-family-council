@@ -1,4 +1,7 @@
 // client/src/confetti.ts
+
+import confetti from 'canvas-confetti';
+
 export async function celebratePass(durationMs = 1200) {
   const confetti = (await import('canvas-confetti')).default;
 

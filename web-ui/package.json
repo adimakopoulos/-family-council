@@ -3,12 +3,14 @@
   "private": true,
   "version": "1.0.0",
   "scripts": {
-    "postinstall": "npm --prefix client install && npm --prefix server install",
-    "dev": "concurrently \"npm --prefix server run dev\" \"npm --prefix client run dev\"",
-    "build": "npm --prefix client run build",
-    "preview": "npm --prefix client run preview"
+    "dev": "concurrently -n CLIENT,SERVER -c magenta,cyan \"npm:dev:client\" \"npm:dev:server\"",
+    "dev:client": "npm run dev --prefix client",
+    "dev:server": "npm start --prefix server",
+    "build": "npm run build --prefix client",
+    "preview": "npm run preview --prefix client",
+    "server": "npm start --prefix server"
   },
   "devDependencies": {
-    "concurrently": "^9.0.0"
+    "concurrently": "^9.2.1"
   }
 }

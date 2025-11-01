@@ -126,7 +126,12 @@ class WSService {
   onState(cb: Listener) { this.listeners.push(cb) }
   onLive(cb: LiveListener) { this.liveListeners.push(cb) }
   onSession(cb: SessionListener) { this.sessionListeners.push(cb) }
-  onSound(cb: SoundListener) { this.soundListeners.push(cb) }
+  onSound(cb: SoundListener) {
+    this.soundListeners.push(cb)
+    return () => {
+      this.soundListeners = this.soundListeners.filter(fn => fn !== cb)
+    }
+  }
   onYou(cb: YouListener) { this.youListeners.push(cb) }
   onReminder(cb: ReminderListener) { this.reminderListeners.push(cb) }
   onInterlude(cb: InterludeListener) { this.interludeListeners.push(cb) }

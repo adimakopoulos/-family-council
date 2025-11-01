@@ -31,92 +31,12 @@
         "totalVotingMs": 0,
         "firstStartedAt": 1762012821962
       }
-    },
-    {
-      "id": "p_og27s1btwu8",
-      "title": "bcvdvgfdgf",
-      "description": "dgfdgfdgf",
-      "voteDeadline": "2025-11-01T21:04:00.000Z",
-      "author": "alex",
-      "status": "passed",
-      "createdAt": 1762031054674,
-      "comments": [],
-      "stats": {
-        "rounds": 1,
-        "totalVotingMs": 6801,
-        "firstStartedAt": 1762034908838,
-        "resolvedAt": 1762034915639
-      }
-    },
-    {
-      "id": "p_86623s1dojt",
-      "title": "bfbn",
-      "description": "bvnvbn",
-      "voteDeadline": "2025-11-01T22:08:00.000Z",
-      "author": "alex",
-      "status": "rejected",
-      "createdAt": 1762034904043,
-      "comments": [],
-      "stats": {
-        "rounds": 1,
-        "totalVotingMs": 8432,
-        "firstStartedAt": 1762034937514,
-        "resolvedAt": 1762034945946
-      }
-    },
-    {
-      "id": "p_g5qkllgp2js",
-      "title": "1125",
-      "description": "1514",
-      "voteDeadline": "2025-11-01T22:10:00.000Z",
-      "author": "alex",
-      "status": "passed",
-      "createdAt": 1762035014689,
-      "comments": [],
-      "stats": {
-        "rounds": 1,
-        "totalVotingMs": 7385,
-        "firstStartedAt": 1762035018553,
-        "resolvedAt": 1762035025938
-      }
-    },
-    {
-      "id": "p_wnabtfzs6ar",
-      "title": "6925",
-      "description": "-",
-      "voteDeadline": "2025-11-01T22:19:00.000Z",
-      "author": "alex",
-      "status": "rejected",
-      "createdAt": 1762035572146,
-      "comments": [],
-      "stats": {
-        "rounds": 1,
-        "totalVotingMs": 3417,
-        "firstStartedAt": 1762035578589,
-        "resolvedAt": 1762035582006
-      }
-    },
-    {
-      "id": "p_26ab9m8mbaci",
-      "title": "956",
-      "description": "-",
-      "voteDeadline": "2025-11-01T22:19:00.000Z",
-      "author": "alex",
-      "status": "passed",
-      "createdAt": 1762035574339,
-      "comments": [],
-      "stats": {
-        "rounds": 1,
-        "totalVotingMs": 2226,
-        "firstStartedAt": 1762035585016,
-        "resolvedAt": 1762035587242
-      }
     }
   ],
   "users": {
     "alex": {
       "name": "alex",
-      "democracy": 70,
+      "democracy": 90,
       "tyrant": 0
     }
   },

@@ -40,3 +40,4 @@ build/
 /web-ui/client/node_modules/
 /web-ui/server/node_modules/
 /.idea/
+/web-ui/node_modules/

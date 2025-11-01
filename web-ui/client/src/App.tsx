@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState, useRef } from 'react'
 import { ws } from './services/ws'
 import { format } from 'date-fns'
 import { v4 as uuid } from 'uuid'
@@ -25,9 +25,17 @@ const FILE_SOUNDS: Record<'pass'|'reject'|'start'|'gavel', string> = {
   gavel: '/sounds/gavel.wav',
 };
 
+const VOLUMES: Record<'pass'|'reject'|'start'|'gavel', number> = {
+  pass: 0.50,
+  reject: 0.50,
+  start: 0.50,
+  gavel: 0.50,   // lower gavel so it doesn’t feel like a second pass
+}
+
 async function playSound(kind: 'pass'|'reject'|'start'|'gavel') {
   try {
     const a = new Audio(FILE_SOUNDS[kind]);
+    a.volume = VOLUMES[kind] ?? 0.3
     await a.play();
   } catch (err) {
     // Autoplay blocked or file missing. Check Network tab and browser gesture.
