@@ -40,7 +40,12 @@
       "author": "alex",
       "status": "open",
       "createdAt": 1762025475326,
-      "comments": []
+      "comments": [],
+      "stats": {
+        "rounds": 1,
+        "totalVotingMs": 0,
+        "firstStartedAt": 1762025478940
+      }
     }
   ],
   "users": {
