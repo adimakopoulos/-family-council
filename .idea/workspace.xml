@@ -4,10 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="96169513-0ed6-4815-8c8b-f6b36886ee56" name="Changes" comment="i18n translation">
+    <list default="true" id="96169513-0ed6-4815-8c8b-f6b36886ee56" name="Changes" comment="fix end summary screen">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web-ui/client/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/web-ui/client/src/App.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web-ui/client/src/services/ws.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web-ui/client/src/services/ws.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-ui/client/src/locales/el/common.json" beforeDir="false" afterPath="$PROJECT_DIR$/web-ui/client/src/locales/el/common.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-ui/client/src/locales/en/common.json" beforeDir="false" afterPath="$PROJECT_DIR$/web-ui/client/src/locales/en/common.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-ui/client/src/types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web-ui/client/src/types.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web-ui/server/data/state.json" beforeDir="false" afterPath="$PROJECT_DIR$/web-ui/server/data/state.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web-ui/server/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/web-ui/server/src/index.js" afterDir="false" />
     </list>
@@ -87,12 +89,21 @@
       <option name="project" value="LOCAL" />
       <updated>1762002018130</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="fix end summary screen">
+      <option name="closed" value="true" />
+      <created>1762011014254</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1762011014254</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="init commit" />
     <MESSAGE value="i18n translation" />
-    <option name="LAST_COMMIT_MESSAGE" value="i18n translation" />
+    <MESSAGE value="fix end summary screen" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix end summary screen" />
   </component>
 </project>

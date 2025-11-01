@@ -246,18 +246,34 @@ function ProposalsTab({ state, you }:{ state: ServerState, you: You }) {
               </div>
 
               {/* Comments */}
-              {p.comments?.length ? (
-                <div className="mt-4 border-t pt-3">
-                  <div className="text-xs font-semibold text-slate-600 mb-1">Comments / Σχόλια</div>
-                  <ul className="space-y-1">
-                    {p.comments.map((c, idx) => (
-                      <li key={idx} className="text-xs text-slate-700">
-                        <span className="font-medium">{c.author}</span>: <span className="whitespace-pre-wrap break-words">{c.text}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ) : null}
+              {/* Author updates / comments */}
+                {p.comments?.length ? (
+                  <div className="mt-4 border-t pt-3">
+                    <div className="text-xs font-semibold text-slate-600 mb-1">
+                      Author updates / Σχόλια–Αλλαγές
+                    </div>
+                    <ul className="space-y-2">
+                      {p.comments
+                        .slice()
+                        .sort((a,b)=>a.timestamp-b.timestamp)
+                        .map((c, idx) => (
+                          <li key={idx} className="text-xs text-slate-700 p-2 bg-slate-50 rounded-lg border">
+                            <div className="text-[11px] text-slate-500">
+                              <span className="font-medium">{c.author}</span> • {new Date(c.timestamp).toLocaleString()}
+                            </div>
+                            {c.text ? <div className="mt-1 whitespace-pre-wrap break-words">{c.text}</div> : null}
+                            {c.eventDate ? (
+                              <div className="mt-1">
+                                ⇢ Proposed date: <span className="font-medium">
+                                  {format(new Date(c.eventDate), 'PPpp', { locale: dfLocale() })}
+                                </span>
+                              </div>
+                            ) : null}
+                          </li>
+                        ))}
+                    </ul>
+                  </div>
+                ) : null}
             </div>
           ))}
         </div>
@@ -372,6 +388,7 @@ function SessionTab({ state, you }:{ state: ServerState, you: You}) {
   return (
     <div className="mx-auto max-w-4xl px-4 mt-6">
       <div className="card p-5">
+
         <div className="flex items-start justify-between gap-4">
           <div>
             <div className="text-sm text-slate-500">{t('session.voting')}</div>
@@ -395,7 +412,34 @@ function SessionTab({ state, you }:{ state: ServerState, you: You}) {
             <button className="btn bg-rose-600 text-white hover:bg-rose-700" onClick={()=>ws.tyrant('veto')}>{t('actions.tyrantVeto')}</button>
           </div>
         </div>
-
+        {/* Author updates visible to everyone */}
+        {proposal?.comments?.length ? (
+          <div className="mt-5 border-t pt-4">
+            <div className="text-sm font-semibold mb-2">
+              Author updates / Σχόλια–Αλλαγές
+            </div>
+            <ul className="space-y-2 text-sm">
+              {proposal.comments
+                .slice()                         // don't mutate original
+                .sort((a,b)=>a.timestamp-b.timestamp)
+                .map((c, idx) => (
+                  <li key={idx} className="p-2 rounded-lg bg-slate-50 border">
+                    <div className="text-xs text-slate-500">
+                      {c.author} • {new Date(c.timestamp).toLocaleString()}
+                    </div>
+                    {c.text ? <div className="mt-1">{c.text}</div> : null}
+                    {c.eventDate ? (
+                      <div className="mt-1 text-slate-700 text-xs">
+                        Proposed new date: <span className="font-medium">
+                          {format(new Date(c.eventDate), 'PPpp', { locale: dfLocale() })}
+                        </span>
+                      </div>
+                    ) : null}
+                  </li>
+                ))}
+            </ul>
+          </div>
+        ) : null}
         {canAuthorAdjust && needAdjust && (
           <div className="mt-5 border-t pt-4">
             <div className="text-sm font-medium mb-2">Not unanimous? Add comment & adjust event date / Μη ομόφωνο; Σχόλιο & αλλαγή ημερομηνίας</div>
@@ -407,9 +451,7 @@ function SessionTab({ state, you }:{ state: ServerState, you: You}) {
           </div>
         )}
 
-        <div className="mt-6 p-3 rounded-lg bg-slate-50 border text-xs text-slate-600">
-          “Democracy is not just the right to vote, but the right to live in dignity, the right to have your voice heard, and the right to shape the future we all share. If you do not share these values you do not belong in here!”
-        </div>
+
       </div>
     </div>
   )

@@ -22,6 +22,8 @@
 
   "actions": {
     "create": "Create",
+    "accept": "Accept",
+    "reject": "Reject",
     "edit": "Edit",
     "delete": "Delete",
     "begin": "Begin Session",

@@ -355,8 +355,20 @@ wss.on('connection', (socket) => {
         const p = state.proposals.find(x=>x.id===proposalId)
         if (!p) return
         if (p.author !== myName) return
-        if (text) p.comments.push({ author: myName, text, timestamp: Date.now() })
-        if (eventDate) p.eventDate = eventDate
+        if (!session || session.status !== 'active' || session.proposalId !== proposalId) return
+
+        const entry = { author: myName, timestamp: Date.now() }
+        if (text && text.trim()) entry.text = text.trim()
+        // Record comment + change as a single entry
+        if (eventDate) {
+          entry.eventDate = eventDate
+          p.eventDate = eventDate
+        }
+        // Only push if there's at least some content (text or eventDate change)
+        if (entry.text || entry.eventDate) {
+          p.comments.push(entry)
+        }
+
 
         if (session && session.proposalId === proposalId) {
           // accumulate time spent in this round so far, increase rounds
