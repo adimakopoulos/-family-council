@@ -96,6 +96,54 @@
         "firstStartedAt": 1761998315995,
         "resolvedAt": 1761998332852
       }
+    },
+    {
+      "id": "p_9l2afeu88jn",
+      "title": "asdasd",
+      "description": "-",
+      "voteDeadline": "2025-11-01T12:54:00.000Z",
+      "author": "alex",
+      "status": "rejected",
+      "createdAt": 1762001648337,
+      "comments": [],
+      "stats": {
+        "rounds": 1,
+        "totalVotingMs": 17550,
+        "firstStartedAt": 1762001677987,
+        "resolvedAt": 1762001695537
+      }
+    },
+    {
+      "id": "p_3536p4s2s58",
+      "title": "213213",
+      "description": "213213",
+      "voteDeadline": "2025-11-01T12:55:00.000Z",
+      "author": "alex",
+      "status": "rejected",
+      "createdAt": 1762001706450,
+      "comments": [],
+      "stats": {
+        "rounds": 1,
+        "totalVotingMs": 3004,
+        "firstStartedAt": 1762001715339,
+        "resolvedAt": 1762001718343
+      }
+    },
+    {
+      "id": "p_cx4mo8jojct",
+      "title": "13434",
+      "description": "3434",
+      "voteDeadline": "2025-11-01T12:55:00.000Z",
+      "author": "alex",
+      "status": "rejected",
+      "createdAt": 1762001708707,
+      "comments": [],
+      "stats": {
+        "rounds": 1,
+        "totalVotingMs": 943,
+        "firstStartedAt": 1762001721345,
+        "resolvedAt": 1762001722288
+      }
     }
   ],
   "users": {
@@ -107,8 +155,8 @@
   },
   "settings": {
     "requiredMembers": 1,
-    "countdownSeconds": 40,
-    "interludeSeconds": 3,
-    "preSessionSeconds": 5
+    "countdownSeconds": 60,
+    "interludeSeconds": 1,
+    "preSessionSeconds": 3
   }
 }

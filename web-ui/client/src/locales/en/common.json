@@ -1,0 +1,91 @@
+{
+  "app": { "title": "Family Council" },
+  "role": { "admin": "Admin (alex)", "member": "Member" },
+  "header": { "live": "Live" },
+
+  "tabs": {
+    "session": "Active Session",
+    "proposals": "Proposals",
+    "rankings": "Rankings"
+  },
+
+  "forms": {
+    "newProposal": "New Proposal",
+    "title": "Title",
+    "description": "Description",
+    "voteDeadline": "Vote Deadline",
+    "eventDateOpt": "Event Date (optional)",
+    "autoFilled": "Auto-filled to the current time."
+  },
+
+  "status": { "open": "Open", "passed": "Passed", "rejected": "Rejected" },
+
+  "actions": {
+    "create": "Create",
+    "edit": "Edit",
+    "delete": "Delete",
+    "begin": "Begin Session",
+    "starting": "Starting…",
+    "votingInProgress": "Voting in progress — join in Active Session",
+    "submit": "Submit",
+    "tyrantEnforce": "Tyrant: Enforce",
+    "tyrantVeto": "Tyrant: Veto"
+  },
+
+  "session": {
+    "voting": "Voting",
+    "timeLeft": "Time left",
+    "votesCast": "Votes cast",
+    "results": "Results",
+    "yourVote": "You voted",
+    "noActive": "No active session.",
+    "quote": "Democracy is not just the right to vote, but the right to live in dignity, the right to have your voice heard, and the right to shape the future we all share. If you do not share these values you do not belong in here!"
+  },
+
+  "lists": {
+    "savedProposals": "Saved Proposals",
+    "comments": "Comments"
+  },
+
+  "meta": {
+    "author": "Author",
+    "status": "Status",
+    "voteBy": "Vote by",
+    "event": "Event",
+    "created": "Created",
+    "id": "ID"
+  },
+
+  "overlays": {
+    "preSession": "Session starts in",
+    "interlude": "Loading next proposal",
+    "ending": "Session Summary",
+    "proposalsVoted": "Proposals voted",
+    "passed": "Passed",
+    "rejected": "Rejected",
+    "avgTime": "Avg time",
+    "totalTime": "Total time",
+    "fastest": "Fastest",
+    "slowest": "Slowest"
+  },
+
+  "admin": {
+    "settings": "Admin Settings",
+    "required": "Required Attendees",
+    "countdown": "Countdown Seconds",
+    "interlude": "Interlude Seconds",
+    "preSession": "Pre-session Seconds"
+  },
+
+  "badges": {
+    "open": "Open",
+    "passed": "Passed",
+    "rejected": "Rejected",
+    "auto": "Auto"
+  },
+
+  "misc": {
+    "noMembers": "No members yet.",
+    "noProposals": "No proposals yet."
+  }
+}

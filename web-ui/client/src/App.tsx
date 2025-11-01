@@ -5,6 +5,13 @@ import { v4 as uuid } from 'uuid'
 import { Proposal, VoteChoice, ServerState, You } from './types'
 import { TIERS, tierIndexForScore, netScore } from './utils/rankings'
 import clsx from 'clsx'
+import { useTranslation } from 'react-i18next'
+import i18n from './i18n'
+import { enUS, el as elLocale } from 'date-fns/locale'
+
+export function dfLocale() {
+  return i18n.language.startsWith('el') ? elLocale : enUS
+}
 
 type TabKey =   'session' | 'proposals'| 'rankings'
 
@@ -14,24 +21,22 @@ const START_BEEP = 'data:audio/wav;base64, UklGRoQAAABXQVZF...'     // short “
 const GAVEL = 'data:audio/wav;base64, UklGRtQAAABXQVZF...'          // percussive click-like
 // (Optionally: try to load /gavel.mp3 if you add a real file in client/public)
 function StatusBadge({ status }: { status: Proposal['status'] }) {
+  const { t } = useTranslation();             // <-- add this
   const styles: Record<string, string> = {
     open: 'bg-amber-50 text-amber-700 border-amber-200',
     passed: 'bg-emerald-50 text-emerald-700 border-emerald-200',
     rejected: 'bg-rose-50 text-rose-700 border-rose-200',
-  }
-  const label: Record<string, string> = {
-    open: 'Open / Ανοικτή',
-    passed: 'Passed / Εγκρίθηκε',
-    rejected: 'Rejected / Απορρίφθηκε',
-  }
-  const icon: Record<string, string> = { open: '🟡', passed: '✅', rejected: '❌' }
+  };
+  const icon: Record<string, string> = { open: '🟡', passed: '✅', rejected: '❌' };
+
   return (
     <span className={`inline-flex items-center gap-1 text-xs px-2 py-1 rounded-full border ${styles[status] || ''}`}>
       <span>{icon[status] || '•'}</span>
-      <span className="font-medium">{label[status] || status}</span>
+      <span className="font-medium">{t(`status.${status}`)}</span>
     </span>
-  )
+  );
 }
+
 
 function Meta({ label, value }: { label: string; value?: string | number }) {
   if (value === undefined || value === null || value === '') return null
@@ -56,34 +61,59 @@ function useLocalName() {
   }, [name])
   return { name, setName }
 }
+function LangSwitch() {
+  const { i18n } = useTranslation()
+  const lang = i18n.language.startsWith('el') ? 'el' : 'en'
+  return (
+    <div className="flex gap-2">
+      <button
+        className={`btn px-3 py-1 rounded ${lang==='en' ? 'bg-slate-900 text-white' : 'bg-white border'}`}
+        onClick={()=>i18n.changeLanguage('en')}
+      >EN</button>
+      <button
+        className={`btn px-3 py-1 rounded ${lang==='el' ? 'bg-slate-900 text-white' : 'bg-white border'}`}
+        onClick={()=>i18n.changeLanguage('el')}
+      >EL</button>
+    </div>
+  )
+}
 
 function Header({ live, you }: { live: string[], you: You | null }) {
+  const { t } = useTranslation()
   return (
     <div className="sticky top-0 z-10 bg-white/80 backdrop-blur border-b border-slate-200">
       <div className="mx-auto max-w-6xl px-4 py-3 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="h-9 w-9 rounded-xl bg-gradient-to-br from-brand-400 to-brand-700" />
           <div>
-            <h1 className="text-xl font-semibold text-slate-900">Family Council / Οικογενειακό Συμβούλιο</h1>
-            <p className="text-xs text-slate-500">Live / Συνδεδεμένοι: <span className="font-medium">{live.join(', ') || '—'}</span></p>
+            <h1 className="text-xl font-semibold text-slate-900">{t('app.title')}</h1>
+            <p className="text-xs text-slate-500">
+              {t('header.live')}: <span className="font-medium">{live.join(', ') || '—'}</span>
+            </p>
           </div>
         </div>
-        {you && (
-          <div className="text-sm text-slate-600">
-            {you.isAdmin ? 'Admin (alex)' : 'Member / Μέλος'} — {you.name}
-          </div>
-        )}
+        <div className="flex items-center gap-4">
+          {you && (
+            <div className="text-sm text-slate-600">
+              {you.isAdmin ? t('role.admin') : t('role.member')} — {you.name}
+            </div>
+          )}
+          <LangSwitch />
+        </div>
       </div>
     </div>
   )
 }
 
+
 function Tabs({ tab, setTab }: { tab: TabKey, setTab: (t: TabKey)=>void }) {
-  const items: { key: TabKey, label: string }[] = [
-    { key: 'session', label: 'Active Session / Ενεργή Συνεδρία' },
-    { key: 'proposals', label: 'Proposals / Προτάσεις' },
-    { key: 'rankings', label: 'Rankings / Βαθμολογίες' }
-  ]
+
+  const { t } = useTranslation()
+  const items = [
+    { key: 'session', label: t('tabs.session') },
+    { key: 'proposals', label: t('tabs.proposals') },
+    { key: 'rankings', label: t('tabs.rankings') }
+  ] as const
   return (
     <div className="mx-auto max-w-6xl px-4 mt-6">
       <div className="flex gap-2">
@@ -98,7 +128,9 @@ function Tabs({ tab, setTab }: { tab: TabKey, setTab: (t: TabKey)=>void }) {
   )
 }
 
+
 function ProposalsTab({ state, you }:{ state: ServerState, you: You }) {
+  const { t } = useTranslation()
   const [form, setForm] = useState({
       title: '',
       description: '',
@@ -132,13 +164,13 @@ function ProposalsTab({ state, you }:{ state: ServerState, you: You }) {
   return (
     <div className="mx-auto max-w-6xl px-4 mt-6 grid md:grid-cols-2 gap-6">
       <div className="card p-5">
-        <h2 className="text-lg font-semibold mb-4">New Proposal / Νέα Πρόταση</h2>
+        <h2 className="text-lg font-semibold mb-4">{t('forms.newProposal')}</h2>
         <div className="grid gap-3">
-          <label className="label">Title / Τίτλος</label>
+          <label className="label">{t('forms.title')}</label>
           <input className="input" value={form.title} onChange={e=>setForm({...form, title:e.target.value})} />
-          <label className="label">Description / Περιγραφή</label>
+          <label className="label">{t('forms.description')}</label>
           <textarea className="input h-24" value={form.description} onChange={e=>setForm({...form, description:e.target.value})} />
-          <label className="label">Vote Deadline / Προθεσμία Ψηφοφορίας</label>
+          <label className="label">{t('forms.voteDeadline')}</label>
           <input
             type="datetime-local"
             className="input input--readonly pr-20"
@@ -147,14 +179,14 @@ function ProposalsTab({ state, you }:{ state: ServerState, you: You }) {
             readOnly
             tabIndex={-1}
           />
-          <label className="label">Event Date (optional) / Ημερομηνία Εκδήλωσης (προαιρετικό)</label>
+          <label className="label">{t('forms.eventDateOpt')}</label>
           <input type="datetime-local" className="input" value={form.eventDate} onChange={e=>setForm({...form, eventDate:e.target.value})} />
-          <button className="btn-primary mt-2" onClick={create}>Create / Δημιουργία</button>
+          <button className="btn-primary mt-2" onClick={create}>{t('actions.create')}</button>
         </div>
       </div>
 
       <div className="card p-5">
-        <h2 className="text-lg font-semibold mb-4">Saved Proposals / Αποθηκευμένες Προτάσεις</h2>
+        <h2 className="text-lg font-semibold mb-4">{t('lists.savedProposals')}</h2>
         <div className="space-y-3">
           {state.proposals.length === 0 && <div className="text-slate-500 text-sm">No proposals yet. / Δεν υπάρχουν προτάσεις.</div>}
           {state.proposals.map(p => (
@@ -170,10 +202,10 @@ function ProposalsTab({ state, you }:{ state: ServerState, you: You }) {
 
               {/* Meta grid */}
               <div className="mt-3 grid sm:grid-cols-2 gap-x-6 gap-y-1">
-                <Meta label="Author / Συγγραφέας" value={p.author} />
-                <Meta label="Vote by / Ψηφοφορία έως" value={format(new Date(p.voteDeadline), 'PPpp')} />
-                {p.eventDate && <Meta label="Event / Εκδήλωση" value={format(new Date(p.eventDate), 'PPpp')} />}
-                <Meta label="Created / Δημιουργήθηκε" value={format(new Date(p.createdAt ?? Date.now()), 'PPpp')} />
+                <Meta label={t('meta.author')} value={p.author} />
+                <Meta label={t('meta.voteBy')} value={format(new Date(p.voteDeadline), 'PPpp', { locale: dfLocale() })} />
+                {p.eventDate && <Meta label={t('meta.event')} value={format(new Date(p.eventDate), 'PPpp', { locale: dfLocale() })} />}
+                <Meta label={t('meta.status')} value={t(`status.${p.status}` as any)} />
                 {p.comments?.length ? <Meta label="Comments / Σχόλια" value={`${p.comments.length}`} /> : null}
                 <Meta label="ID" value={p.id} />
               </div>
@@ -182,7 +214,7 @@ function ProposalsTab({ state, you }:{ state: ServerState, you: You }) {
               <div className="mt-4 flex items-center justify-between">
                 {canEdit(p) ? (
                   <details>
-                    <summary className="cursor-pointer text-sm text-brand-700">Edit / Επεξεργασία</summary>
+                    <summary className="cursor-pointer text-sm text-brand-700">{t('actions.edit')}</summary>
                     <div className="mt-2 grid gap-2">
                       <label className="label">Event Date / Ημερομηνία Εκδήλωσης</label>
                       <input
@@ -208,7 +240,7 @@ function ProposalsTab({ state, you }:{ state: ServerState, you: You }) {
                       if (confirm('Delete proposal? / Διαγραφή πρότασης;')) ws.deleteProposal(p.id)
                     }}
                   >
-                    Delete / Διαγραφή
+                  {t('actions.delete')}
                   </button>
                 )}
               </div>
@@ -293,6 +325,7 @@ function RankingsTab({ state, you }:{ state: ServerState; you: You }) {
 }
 
 function SessionTab({ state, you }:{ state: ServerState, you: You}) {
+  const { t } = useTranslation()
   const session = state.session
   const yourVote = (session?.votes && (session.votes as any)[you.name]) as VoteChoice | undefined || null
 
@@ -319,8 +352,8 @@ function SessionTab({ state, you }:{ state: ServerState, you: You}) {
     return (
       <div className="mx-auto max-w-4xl px-4 mt-6">
         <div className="card p-6 text-center">
-          <p className="text-sm text-slate-600 mb-4">No active session. / Δεν υπάρχει ενεργή συνεδρία.</p>
-          <p className="text-xs text-slate-500">“Democracy is not just the right to vote, but the right to live in dignity, the right to have your voice heard, and the right to shape the future we all share.”</p>
+          <p className="text-sm text-slate-600 mb-4">{t('session.noActive')}</p>
+          <p className="text-xs text-slate-500">{t('session.quote')}</p>
         </div>
       </div>
     )
@@ -346,25 +379,25 @@ function SessionTab({ state, you }:{ state: ServerState, you: You}) {
       <div className="card p-5">
         <div className="flex items-start justify-between gap-4">
           <div>
-            <div className="text-sm text-slate-500">Voting / Ψηφοφορία</div>
+            <div className="text-sm text-slate-500">{t('session.voting')}</div>
             <h3 className="text-xl font-semibold">{proposal?.title}</h3>
             <p className="text-sm text-slate-600">{proposal?.description}</p>
-            <div className="text-xs text-slate-500 mt-1">Votes cast / Έχουν ψηφίσει: <span className="font-medium">{cast}/{total}</span></div>
-            {everyoneVoted && <div className="text-xs text-slate-600 mt-1">Results / Αποτελέσματα: {votedDisplay}</div>}
+            <div className="text-xs text-slate-500 mt-1">{t('session.votesCast')}: <span className="font-medium">{cast}/{total}</span></div>
+            {everyoneVoted && <div className="text-xs text-slate-600 mt-1">{t('session.results')}: {votedDisplay}</div>}
           </div>
           <div className="text-right">
-            <div className="text-xs text-slate-500">Time left / Υπόλοιπο χρόνου</div>
+            <div className="text-xs text-slate-500">{t('session.timeLeft')}</div>
             <div className={clsx('text-2xl font-bold', remaining <= 10 ? 'text-red-600' : 'text-slate-800')}>{Math.floor(remaining/60)}:{String(remaining%60).padStart(2, '0')}</div>
           </div>
         </div>
 
         <div className="mt-4 flex items-center gap-2">
-          <button className="btn-primary" onClick={()=>castVote('accept')}>Accept / Αποδοχή</button>
-          <button className="btn-secondary" onClick={()=>castVote('reject')}>Reject / Απόρριψη</button>
-          <div className="text-xs text-slate-600 ml-2">You voted / Η ψήφος σου: <span className="font-semibold">{yourVote || '—'}</span></div>
+          <button className="btn-primary" onClick={()=>castVote('accept')}>{t('actions.accept') || 'Accept'}</button>
+          <button className="btn-secondary" onClick={()=>castVote('reject')}>{t('actions.reject') || 'Reject'}</button>
+          <div className="text-xs text-slate-600 ml-2">{t('session.yourVote')}: <span className="font-semibold">{yourVote || '—'}</span></div>
           <div className="ml-auto flex items-center gap-2">
-            <button className="btn bg-amber-600 text-white hover:bg-amber-700" onClick={()=>ws.tyrant('enforce')}>Tyrant: Enforce / Τύραννος: Επιβολή</button>
-            <button className="btn bg-rose-600 text-white hover:bg-rose-700" onClick={()=>ws.tyrant('veto')}>Tyrant: Veto / Τύραννος: Βέτο</button>
+            <button className="btn bg-amber-600 text-white hover:bg-amber-700" onClick={()=>ws.tyrant('enforce')}>{t('actions.tyrantEnforce')}</button>
+            <button className="btn bg-rose-600 text-white hover:bg-rose-700" onClick={()=>ws.tyrant('veto')}>{t('actions.tyrantVeto')}</button>
           </div>
         </div>
 
@@ -388,6 +421,7 @@ function SessionTab({ state, you }:{ state: ServerState, you: You}) {
 }
 
 export default function App() {
+  const { t } = useTranslation();
   const { name, setName } = useLocalName()
   const [connected, setConnected] = useState(false)
   const [live, setLive] = useState<string[]>([])
@@ -517,10 +551,10 @@ export default function App() {
   const canStart = live.length >= state.settings.requiredMembers && !isVoting
 
   const buttonLabel = isVoting
-    ? 'Voting in progress — join in Active Session / Η ψηφοφορία είναι σε εξέλιξη — μπείτε στην Ενεργή Συνεδρία'
+    ? t('actions.votingInProgress')
     : starting
-      ? 'Starting… / Έναρξη…'
-      : `Begin Session / Έναρξη Συνεδρίας (≥ ${state.settings.requiredMembers})`
+      ? t('actions.starting')
+      : t('actions.begin')
 
   const buttonClass = isVoting || starting
     ? 'btn bg-rose-600 text-white hover:bg-rose-700'
@@ -529,6 +563,18 @@ export default function App() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-brand-50/40 to-white">
       <Header live={live} you={you} />
+      {interlude && Date.now() < interlude.until && (
+                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/80 backdrop-blur">
+                      <div className="card p-8 text-center">
+                        <div className="animate-pulse text-lg font-semibold mb-2">
+                          Loading next proposal / Φόρτωση επόμενης πρότασης…
+                        </div>
+                        <div className="text-2xl font-bold">
+                          {Math.max(0, Math.ceil((interlude.until - Date.now()) / 1000))}s
+                        </div>
+                      </div>
+                    </div>
+                  )}
       {preSession && Date.now() < preSession.until && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/80 backdrop-blur">
           <div className="card p-8 text-center">
@@ -550,12 +596,12 @@ export default function App() {
               <button className="btn btn-secondary" onClick={()=>setEnding(null)}>Close / Κλείσιμο</button>
             </div>
             <div className="grid md:grid-cols-3 gap-3 text-sm">
-              <div className="card p-3"><div className="text-xs text-slate-500">Proposals voted / Ψηφίστηκαν</div><div className="text-2xl font-bold">{ending.total}</div></div>
-              <div className="card p-3"><div className="text-xs text-slate-500">Passed / Εγκρίθηκαν</div><div className="text-2xl font-bold">{ending.passed}</div></div>
-              <div className="card p-3"><div className="text-xs text-slate-500">Rejected / Απορρίφθηκαν</div><div className="text-2xl font-bold">{ending.rejected}</div></div>
+              <div className="card p-3"><div className="text-xs text-slate-500">{t('overlays.proposalsVoted')}</div><div className="text-2xl font-bold">{ending.total}</div></div>
+              <div className="card p-3"><div className="text-xs text-slate-500">{t('overlays.passed')}</div><div className="text-2xl font-bold">{ending.passed}</div></div>
+              <div className="card p-3"><div className="text-xs text-slate-500">{t('overlays.rejected')}</div><div className="text-2xl font-bold">{ending.rejected}</div></div>
             </div>
             <div className="mt-3 text-xs text-slate-600">
-              Avg time / Μέσος χρόνος: {Math.round((ending.avgMs||0)/1000)}s • Total time: {Math.round((ending.totalMs||0)/1000)}s
+              {t('overlays.avgTime')}: {Math.round((ending.avgMs||0)/1000)}s •  {t('overlays.totalTime')}: {Math.round((ending.totalMs||0)/1000)}s
             </div>
             {(ending.fastest || ending.slowest) && (
               <div className="mt-2 grid md:grid-cols-2 gap-3 text-sm">
@@ -600,42 +646,50 @@ export default function App() {
 
         {you.isAdmin && (
           <details className="ml-auto card p-3">
-            <summary className="cursor-pointer text-sm font-medium">Admin Settings / Ρυθμίσεις Διαχειριστή</summary>
-            <div className="grid grid-cols-2 gap-2 mt-2">
-              <label className="label">Required Attendees / Απαραίτητα Μέλη</label>
-              <input type="number" className="input" defaultValue={state.settings.requiredMembers} onBlur={e=>ws.updateSettings({ requiredMembers: Number(e.target.value) })} />
-              <label className="label">Countdown Seconds / Δευτ. Αντίστροφης</label>
-              <input type="number" className="input" defaultValue={state.settings.countdownSeconds} onBlur={e=>ws.updateSettings({ countdownSeconds: Number(e.target.value) })} />
-              <label className="label">Interlude Seconds / Δευτ. Παύσης</label>
+            <summary className="cursor-pointer text-sm font-medium">
+              {t('admin.settings')}
+            </summary>
+
+            <div className="grid grid-cols-2 gap-2 mt-2 items-center">
+              <label className="label" htmlFor="req">{t('admin.required')}</label>
               <input
+                id="req"
+                type="number"
+                className="input"
+                defaultValue={state.settings.requiredMembers}
+                onBlur={e => ws.updateSettings({ requiredMembers: Number(e.target.value) })}
+              />
+
+              <label className="label" htmlFor="count">{t('admin.countdown')}</label>
+              <input
+                id="count"
+                type="number"
+                className="input"
+                defaultValue={state.settings.countdownSeconds}
+                onBlur={e => ws.updateSettings({ countdownSeconds: Number(e.target.value) })}
+              />
+
+              <label className="label" htmlFor="inter">{t('admin.interlude')}</label>
+              <input
+                id="inter"
                 type="number"
                 className="input"
                 defaultValue={state.settings.interludeSeconds}
                 onBlur={e => ws.updateSettings({ interludeSeconds: Number(e.target.value) })}
               />
-              <label className="label">Pre-session Seconds / Δευτ. πριν την έναρξη</label>
+
+              <label className="label" htmlFor="pre">{t('admin.preSession')}</label>
               <input
+                id="pre"
                 type="number"
                 className="input"
                 defaultValue={state.settings.preSessionSeconds}
                 onBlur={e => ws.updateSettings({ preSessionSeconds: Number(e.target.value) })}
               />
             </div>
-            {interlude && Date.now() < interlude.until && (
-              <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/80 backdrop-blur">
-                <div className="card p-8 text-center">
-                  <div className="animate-pulse text-lg font-semibold mb-2">
-                    Loading next proposal / Φόρτωση επόμενης πρότασης…
-                  </div>
-                  <div className="text-2xl font-bold">
-                    {Math.max(0, Math.ceil((interlude.until - Date.now()) / 1000))}s
-                  </div>
-                </div>
-              </div>
-            )}
-
           </details>
         )}
+
       </div>
 
       <Tabs tab={tab} setTab={setTab} />
