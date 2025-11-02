@@ -4,15 +4,30 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="96169513-0ed6-4815-8c8b-f6b36886ee56" name="Changes" comment="leaderboard and xp bars">
-      <change afterPath="$PROJECT_DIR$/web-ui/client/src/components/Snackbar.tsx" afterDir="false" />
+    <list default="true" id="96169513-0ed6-4815-8c8b-f6b36886ee56" name="Changes" comment="add snack bars and change rankings .  now you need to spend influence to veto :)">
+      <change afterPath="$PROJECT_DIR$/web-ui/client/src/components/AdminSettingsCard.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web-ui/client/src/components/Tabs.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web-ui/client/src/components/common/Meta.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web-ui/client/src/components/common/StatusBadge.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web-ui/client/src/components/layout/Header.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web-ui/client/src/components/layout/HeaderBar.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web-ui/client/src/components/layout/LangSwitch.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web-ui/client/src/components/layout/Tabs.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web-ui/client/src/components/overlays/EndingOverlay.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web-ui/client/src/components/overlays/InterludeOverlay.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web-ui/client/src/components/overlays/PreSessionOverlay.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web-ui/client/src/components/proposals/ProposalsTab.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web-ui/client/src/components/rankings/RankingsTab.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web-ui/client/src/components/session/ActiveSessionView.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web-ui/client/src/components/session/NoActiveSession.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web-ui/client/src/hooks/useInfluenceGain.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web-ui/client/src/hooks/useLocalName.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web-ui/client/src/utils/audio.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web-ui/client/src/utils/constants.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web-ui/client/src/utils/dates.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web-ui/client/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/web-ui/client/src/App.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web-ui/client/src/locales/el/common.json" beforeDir="false" afterPath="$PROJECT_DIR$/web-ui/client/src/locales/el/common.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web-ui/client/src/locales/en/common.json" beforeDir="false" afterPath="$PROJECT_DIR$/web-ui/client/src/locales/en/common.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web-ui/client/src/utils/rankings.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web-ui/client/src/utils/rankings.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web-ui/server/data/state.json" beforeDir="false" afterPath="$PROJECT_DIR$/web-ui/server/data/state.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web-ui/server/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/web-ui/server/src/index.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,9 +69,11 @@
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Alexd\IdeaProjects\FamilyCounsil\web-ui\client\src\components" />
+      <recent name="C:\Users\Alexd\IdeaProjects\FamilyCounsil\web-ui\client\src\components\layout" />
+      <recent name="C:\Users\Alexd\IdeaProjects\FamilyCounsil\web-ui\client\src\components\rankings" />
+      <recent name="C:\Users\Alexd\IdeaProjects\FamilyCounsil\web-ui\client\src\components\common" />
       <recent name="C:\Users\Alexd\IdeaProjects\FamilyCounsil\web-ui\client\public\sounds" />
-      <recent name="C:\Users\Alexd\IdeaProjects\FamilyCounsil\web-ui\client\public" />
-      <recent name="C:\Users\Alexd\IdeaProjects\FamilyCounsil\web-ui\client\src\i18n" />
     </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -164,7 +181,23 @@
       <option name="project" value="LOCAL" />
       <updated>1762046039487</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="add snack bars and change rankings .  now you need to spend influence to veto :)">
+      <option name="closed" value="true" />
+      <created>1762088614022</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1762088614022</updated>
+    </task>
+    <task id="LOCAL-00014" summary="add snack bars and change rankings .  now you need to spend influence to veto :)">
+      <option name="closed" value="true" />
+      <created>1762088788290</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1762088788290</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -179,6 +212,7 @@
     <MESSAGE value="clean up,fix sound playing twice" />
     <MESSAGE value="handle late joiners :)" />
     <MESSAGE value="leaderboard and xp bars" />
-    <option name="LAST_COMMIT_MESSAGE" value="leaderboard and xp bars" />
+    <MESSAGE value="add snack bars and change rankings .  now you need to spend influence to veto :)" />
+    <option name="LAST_COMMIT_MESSAGE" value="add snack bars and change rankings .  now you need to spend influence to veto :)" />
   </component>
 </project>

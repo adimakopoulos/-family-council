@@ -33,143 +33,93 @@
       }
     },
     {
-      "id": "p_p0ytocpa1x",
-      "title": "bbb",
+      "id": "p_i8qwceodotg",
+      "title": "kafe se 10 lepta",
       "description": "-",
-      "voteDeadline": "2025-11-02T12:44:00.000Z",
-      "author": "alex",
-      "status": "rejected",
-      "createdAt": 1762087509058,
-      "comments": [],
-      "stats": {
-        "rounds": 1,
-        "totalVotingMs": 0,
-        "firstStartedAt": 1762087512997
-      }
-    },
-    {
-      "id": "p_ti2ewhpon9",
-      "title": "Usudu",
-      "description": "Jjjj",
-      "voteDeadline": "2025-11-02T12:45:00.000Z",
-      "author": "Alekos",
+      "voteDeadline": "2025-11-02T15:57:00.000Z",
+      "eventDate": "2025-11-02T16:13:00.000Z",
+      "author": "sot",
       "status": "passed",
-      "createdAt": 1762087548074,
+      "createdAt": 1762099114386,
       "comments": [],
       "stats": {
         "rounds": 1,
-        "totalVotingMs": 17528,
-        "firstStartedAt": 1762087697357,
-        "resolvedAt": 1762087714885
+        "totalVotingMs": 40521,
+        "firstStartedAt": 1762099223494,
+        "resolvedAt": 1762099264015
       }
     },
     {
-      "id": "p_qv4rit6j9nl",
-      "title": "fbgdgf",
+      "id": "p_tx5ndje0ur",
+      "title": "glufada kafe",
       "description": "-",
-      "voteDeadline": "2025-11-02T12:48:00.000Z",
-      "author": "alex",
+      "voteDeadline": "2025-11-02T16:01:00.000Z",
+      "author": "efi",
       "status": "passed",
-      "createdAt": 1762087687487,
-      "comments": [],
+      "createdAt": 1762099309790,
+      "comments": [
+        {
+          "author": "efi",
+          "timestamp": 1762099404271,
+          "text": "twra"
+        }
+      ],
       "stats": {
-        "rounds": 1,
-        "totalVotingMs": 9387,
-        "firstStartedAt": 1762087719898,
-        "resolvedAt": 1762087729285
+        "rounds": 2,
+        "totalVotingMs": 426731,
+        "firstStartedAt": 1762099353794,
+        "resolvedAt": 1762099416152
       }
     },
     {
-      "id": "p_sigwg9azbyn",
-      "title": "154",
-      "description": "-",
-      "voteDeadline": "2025-11-02T12:49:00.000Z",
-      "author": "alex",
-      "status": "rejected",
-      "createdAt": 1762087754446,
-      "comments": [],
-      "stats": {
-        "rounds": 1,
-        "totalVotingMs": 25787,
-        "firstStartedAt": 1762087764567,
-        "resolvedAt": 1762087790354
-      }
-    },
-    {
-      "id": "p_qgst8tlcvm",
-      "title": "gh",
-      "description": "gh",
-      "voteDeadline": "2025-11-02T12:50:00.000Z",
-      "author": "alex",
-      "status": "passed",
-      "createdAt": 1762087826794,
-      "comments": [],
-      "stats": {
-        "rounds": 1,
-        "totalVotingMs": 10033,
-        "firstStartedAt": 1762087842462,
-        "resolvedAt": 1762087852495
-      }
-    },
-    {
-      "id": "p_0fd5wxqsj3xj",
-      "title": "gh",
-      "description": "gh",
-      "voteDeadline": "2025-11-02T12:50:00.000Z",
-      "author": "alex",
-      "status": "rejected",
-      "createdAt": 1762087828267,
-      "comments": [],
-      "stats": {
-        "rounds": 1,
-        "totalVotingMs": 0,
-        "firstStartedAt": 1762087857502
-      }
-    },
-    {
-      "id": "p_wmhkl7ku2k",
+      "id": "p_x9z8cxadb3b",
       "title": "asd",
-      "description": "asd",
-      "voteDeadline": "2025-11-02T12:58:00.000Z",
+      "description": "-",
+      "voteDeadline": "2025-11-02T18:32:00.000Z",
       "author": "alex",
       "status": "rejected",
-      "createdAt": 1762088333653,
+      "createdAt": 1762110162595,
       "comments": [],
       "stats": {
         "rounds": 1,
-        "totalVotingMs": 34713,
-        "firstStartedAt": 1762088380577,
-        "resolvedAt": 1762088415290
+        "totalVotingMs": 4436,
+        "firstStartedAt": 1762110170344,
+        "resolvedAt": 1762110174780
       }
     },
     {
-      "id": "p_fuqbzdb666l",
-      "title": "bvbvbvbvbv",
+      "id": "p_6os9zr26u6s",
+      "title": "111",
       "description": "-",
-      "voteDeadline": "2025-11-02T13:00:00.000Z",
+      "voteDeadline": "2025-11-02T19:03:00.000Z",
       "author": "alex",
-      "status": "open",
-      "createdAt": 1762088439806,
+      "status": "passed",
+      "createdAt": 1762110195243,
       "comments": [],
       "stats": {
         "rounds": 1,
-        "totalVotingMs": 0,
-        "firstStartedAt": 1762088443694
+        "totalVotingMs": 5628,
+        "firstStartedAt": 1762110209263,
+        "resolvedAt": 1762110214891
       }
     }
   ],
   "users": {
     "alex": {
       "name": "alex",
-      "influence": 45
+      "influence": 10
+    },
+    "sot": {
+      "name": "sot",
+      "influence": 10
     },
     "Alekos": {
       "name": "Alekos",
-      "influence": 0
+      "influence": 10
     },
-    "b bbb": {
-      "name": "b bbb",
-      "influence": 0
+    "efi": {
+      "name": "efi",
+      "influence": 15
     }
   },
   "settings": {
