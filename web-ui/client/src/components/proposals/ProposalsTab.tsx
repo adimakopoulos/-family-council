@@ -37,10 +37,13 @@ export default function ProposalsTab({
     pushSnack(t('snack.proposalCreated'), 'success')
   }
 
+  // Helpers (inline permissions)
+  const isPendingOrOpen = (p: Proposal) => p.status === 'pending' || p.status === 'open'
+  const canEditOrDelete = (p: Proposal) => isPendingOrOpen(p) && p.author === you.name
+
   // Only show proposals authored by the current user that are still pending/open.
-  // If your server uses "pending" instead of "open", change the check below accordingly.
   const yourPending = (state.proposals || []).filter(p =>
-    p.author === you.name && (p.status === 'open' || p.status === 'pending')
+    p.author === you.name && isPendingOrOpen(p)
   )
 
   return (
@@ -128,8 +131,34 @@ export default function ProposalsTab({
                 </div>
                 <StatusBadge status={p.status as any} />
               </div>
-              {/* simple inline edit affordance for author */}
-              <div className="mt-3 text-xs text-slate-500">{t('lists.pendingHint')}</div>
+
+              {/* Author-only actions for pending/open */}
+              {canEditOrDelete(p) && (
+                <div className="mt-4 flex items-center justify-end gap-3">
+                  <button
+                    className="btn btn-secondary"
+                    onClick={() => {
+                      const nextTitle = prompt(t('forms.editTitlePrompt'), p.title)
+                      if (nextTitle != null) ws.editProposal(p.id, { title: nextTitle })
+                    }}
+                  >
+                    {t('actions.edit')}
+                  </button>
+                  <button
+                    className="btn bg-rose-600 text-white hover:bg-rose-700"
+                    onClick={() => {
+                      if (confirm(t('actions.deleteConfirm'))) ws.deleteProposal(p.id)
+                    }}
+                  >
+                    {t('actions.delete')}
+                  </button>
+                </div>
+              )}
+
+              {/* Context hint */}
+              <div className="mt-2 text-xs text-slate-500">
+                {t('lists.pendingHint')}
+              </div>
             </div>
           ))}
         </div>

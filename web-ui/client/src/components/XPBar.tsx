@@ -1,36 +1,41 @@
-// src/components/XPBar.tsx
 import React from 'react'
 import clsx from 'clsx'
 
 export default function XPBar({
   pct,
-  height = '6px',
-  flash = false,
   label,
+  flash,
+  height = 8,     // NEW: default thickness (px). You set 12 in callers.
 }: {
   pct: number
-  height?: string
-  flash?: boolean
   label?: string
+  flash?: boolean
+  height?: number
 }) {
-  const cl = clsx('relative w-full rounded-full bg-slate-200/70 overflow-hidden')
+  const safePct = Math.max(0, Math.min(100, pct || 0))
+
   return (
-    <div className={cl} style={{ height }}>
+    <div className="w-full">
+      {label ? (
+        <div className="mb-1 text-[11px] text-slate-600">{label}</div>
+      ) : null}
       <div
         className={clsx(
-          'h-full rounded-full transition-all duration-700',
-          flash && 'shadow-[0_0_0_2px_rgba(34,197,94,0.35)]'
+          'w-full rounded-full bg-slate-200 overflow-hidden',
+          flash && 'ring-2 ring-amber-300'
         )}
-        style={{
-          width: `${Math.max(0, Math.min(100, pct))}%`,
-          background: 'linear-gradient(90deg, #34d399, #22c55e)', // emerald gradient
-        }}
-      />
-      {label ? (
-        <div className="absolute inset-0 flex items-center justify-center text-[10px] font-medium text-slate-700">
-          {label}
-        </div>
-      ) : null}
+        style={{ height }}
+        aria-label="progress"
+        role="progressbar"
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-valuenow={Math.round(safePct)}
+      >
+        <div
+          className="h-full bg-brand-600 transition-[width] duration-500"
+          style={{ width: `${safePct}%` }}
+        />
+      </div>
     </div>
   )
 }

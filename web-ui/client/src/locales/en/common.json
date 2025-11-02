@@ -123,5 +123,26 @@
   "misc": {
     "noMembers": "No members yet.",
     "noProposals": "No proposals yet."
+  },
+  "rankings": {
+    "howItWorksTitle": "How influence works",
+    "howItWorks": {
+      "vote": "Vote actively during sessions to earn or lose influence based on outcomes.",
+      "proposals": "Create clear, helpful proposals — accepted proposals tend to raise your influence.",
+      "tyrant": "Using Tyrant actions may cost influence; use them wisely.",
+      "behavior": "Constructive participation and consistency are rewarded over time."
+    },
+    "boardTitle": "Influence Board",
+    "tiersTitle": "Tiers",
+    "noMembers": "No members yet.",
+    "name": "Name",
+    "title": "Title",
+    "influence": "Influence",
+    "deleteUserConfirm": "Delete user \"{{name}}\"?",
+    "levelLabel": "Level {{level}}",
+    "toPromote": "You need {{amount}} more to reach {{title}}",
+    "maxTier": "Max tier",
+    "progressPct": "{{pct}}% progress",
+    "nextUp": "Next: {{title}}"
   }
 }
