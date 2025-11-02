@@ -1,21 +1,31 @@
-import React from 'react'
-import clsx from 'clsx'
-import { useTranslation } from 'react-i18next'
+import React from 'react';
+import clsx from 'clsx';
+import { useTranslation } from 'react-i18next';
 
-export type TabKey = 'session' | 'proposals' | 'rankings'
+// ✅ include 'archive' in the exported union type
+export type TabKey = 'session' | 'proposals' | 'rankings' | 'archive';
 
-export default function Tabs({ tab, setTab }: { tab: TabKey, setTab: (t: TabKey)=>void }) {
-  const { t } = useTranslation()
+export default function Tabs({
+  tab,
+  setTab,
+}: {
+  tab: TabKey;
+  setTab: (t: TabKey) => void;
+}) {
+  const { t } = useTranslation();
+
+  // ✅ add the archive item here
   const items = [
-    { key: 'session', label: t('tabs.session') },
+    { key: 'session',   label: t('tabs.session') },
     { key: 'proposals', label: t('tabs.proposals') },
-    { key: 'rankings', label: t('tabs.rankings') },
-  ] as const
+    { key: 'rankings',  label: t('tabs.rankings') },
+    { key: 'archive',   label: t('tabs.archive') }, // <-- NEW
+  ] as const;
 
   return (
     <div className="mx-auto max-w-6xl px-4 mt-6">
       <div className="flex gap-2">
-        {items.map(i => (
+        {items.map((i) => (
           <button
             key={i.key}
             className={clsx(
@@ -31,5 +41,5 @@ export default function Tabs({ tab, setTab }: { tab: TabKey, setTab: (t: TabKey)
         ))}
       </div>
     </div>
-  )
+  );
 }

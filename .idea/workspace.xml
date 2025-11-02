@@ -4,11 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="96169513-0ed6-4815-8c8b-f6b36886ee56" name="Changes" comment="refactor and break down the monolith">
+    <list default="true" id="96169513-0ed6-4815-8c8b-f6b36886ee56" name="Changes" comment="change ProposalsTab.tsx layout">
+      <change afterPath="$PROJECT_DIR$/web-ui/client/src/components/proposals/ProposalArchiveTab.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-ui/client/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/web-ui/client/src/App.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-ui/client/src/components/Tabs.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-ui/client/src/components/layout/Tabs.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/web-ui/client/src/components/layout/Tabs.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web-ui/client/src/components/proposals/ProposalsTab.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/web-ui/client/src/components/proposals/ProposalsTab.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web-ui/client/src/locales/el/common.json" beforeDir="false" afterPath="$PROJECT_DIR$/web-ui/client/src/locales/el/common.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web-ui/client/src/locales/en/common.json" beforeDir="false" afterPath="$PROJECT_DIR$/web-ui/client/src/locales/en/common.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-ui/server/data/state.json" beforeDir="false" afterPath="$PROJECT_DIR$/web-ui/server/data/state.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -186,7 +191,15 @@
       <option name="project" value="LOCAL" />
       <updated>1762110425525</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="change ProposalsTab.tsx layout">
+      <option name="closed" value="true" />
+      <created>1762111261457</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1762111261457</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -203,6 +216,7 @@
     <MESSAGE value="leaderboard and xp bars" />
     <MESSAGE value="add snack bars and change rankings .  now you need to spend influence to veto :)" />
     <MESSAGE value="refactor and break down the monolith" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactor and break down the monolith" />
+    <MESSAGE value="change ProposalsTab.tsx layout" />
+    <option name="LAST_COMMIT_MESSAGE" value="change ProposalsTab.tsx layout" />
   </component>
 </project>

@@ -109,9 +109,15 @@
       "description": "-",
       "voteDeadline": "2025-11-02T19:17:00.000Z",
       "author": "alex",
-      "status": "open",
+      "status": "passed",
       "createdAt": 1762111094711,
-      "comments": []
+      "comments": [],
+      "stats": {
+        "rounds": 1,
+        "totalVotingMs": 4164,
+        "firstStartedAt": 1762111267112,
+        "resolvedAt": 1762111589085
+      }
     },
     {
       "id": "p_mkknvlogvv",
@@ -121,13 +127,49 @@
       "author": "alex",
       "status": "open",
       "createdAt": 1762111103888,
+      "comments": [],
+      "stats": {
+        "rounds": 1,
+        "totalVotingMs": 0,
+        "firstStartedAt": 1762111594089
+      }
+    },
+    {
+      "id": "p_bkhncyh482",
+      "title": "dvsdsdfs",
+      "description": "-",
+      "voteDeadline": "2025-11-02T19:22:00.000Z",
+      "author": "alex",
+      "status": "open",
+      "createdAt": 1762111577394,
+      "comments": []
+    },
+    {
+      "id": "p_9mifp3qwjtf",
+      "title": "1411141",
+      "description": "-",
+      "voteDeadline": "2025-11-02T20:28:00.000Z",
+      "eventDate": "2025-11-02T20:29:00.000Z",
+      "author": "alex",
+      "status": "open",
+      "createdAt": 1762115375962,
+      "comments": []
+    },
+    {
+      "id": "p_w9l86zn6v2",
+      "title": "asdasd",
+      "description": "-",
+      "voteDeadline": "2025-11-02T20:36:00.000Z",
+      "author": "alex",
+      "status": "open",
+      "createdAt": 1762115807651,
       "comments": []
     }
   ],
   "users": {
     "alex": {
       "name": "alex",
-      "influence": 10
+      "influence": 20
     },
     "sot": {
       "name": "sot",
@@ -140,6 +182,10 @@
     "efi": {
       "name": "efi",
       "influence": 15
+    },
+    "das": {
+      "name": "das",
+      "influence": 0
     }
   },
   "settings": {

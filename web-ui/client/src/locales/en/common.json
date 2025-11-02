@@ -6,7 +6,8 @@
   "tabs": {
     "session": "Active Session",
     "proposals": "Proposals",
-    "rankings": "Rankings"
+    "rankings": "Rankings",
+    "archive": "Proposal Archive"
   },
 
   "forms": {
@@ -24,8 +25,17 @@
     "titleMissingAlert": "Please fill in the Title."
   },
 
-  "status": { "open": "Open", "passed": "Passed", "rejected": "Rejected" },
-
+  "status": {
+    "pending": "Pending",
+    "open": "Open", "passed": "Passed", "rejected": "Rejected" },
+  "archive": {
+    "status": "Κατάσταση",
+    "author": "Συντάκτης",
+    "fromDate": "Από",
+    "toDate": "Έως",
+    "any": "Οποιοδήποτε",
+    "noResults": "Δεν υπάρχουν προτάσεις που να ταιριάζουν στα φίλτρα."
+  },
   "actions": {
     "create": "Create",
     "accept": "Accept",
@@ -66,7 +76,10 @@
     "noProposals": "No proposals yet.",
     "noEditRights": "No edit rights",
     "authorUpdates": "Author updates",
-    "proposedDate": "Proposed date:"
+    "proposedDate": "Proposed date:",
+    "yourPending": "Your pending proposals",
+    "noPending": "You have no pending proposals.",
+    "pendingHint": "Pending proposals will appear here until they are voted."
   },
 
   "meta": {
@@ -75,6 +88,7 @@
     "voteBy": "Vote by",
     "event": "Event",
     "created": "Created",
+    "creationDate": "Creation date",
     "id": "ID"
   },
 

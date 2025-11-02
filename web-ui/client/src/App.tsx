@@ -23,6 +23,8 @@ import EndingOverlay from './components/overlays/EndingOverlay'
 import InterludeOverlay from './components/overlays/InterludeOverlay'
 import PreSessionOverlay from './components/overlays/PreSessionOverlay'
 
+import ProposalArchiveTab from './components/proposals/ProposalArchiveTab'
+
 function toLocalInput(dt: Date) {
   const z = new Date(dt.getTime() - dt.getTimezoneOffset() * 60000)
   return z.toISOString().slice(0,16) // "YYYY-MM-DDTHH:mm"
@@ -298,6 +300,7 @@ export default function App() {
       {tab === 'proposals' && <ProposalsTab state={state} you={you} pushSnack={pushSnack} />}
       {tab === 'rankings' && <RankingsTab state={state} you={you} />}
       {tab === 'session' && <SessionTab state={state} you={you} pushSnack={pushSnack} />}
+      {tab === 'archive' && <ProposalArchiveTab state={state} you={you} />}
       <SnackStack snacks={snacks} onClose={remove} />
 
     </div>
