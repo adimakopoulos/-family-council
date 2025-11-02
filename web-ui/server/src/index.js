@@ -499,14 +499,33 @@ wss.on('connection', (socket) => {
   })
 
   socket.on('close', () => {
+    const name = live.get(socket) || null
     live.delete(socket)
-    if (session && session.votingSet?.includes(myName) && !session.votes?.[myName]) {
-      session.votingSet = session.votingSet.filter(n => n !== myName)
-      broadcast({ type: 'session', session })
-      if ((Object.keys(session.votes).length) >= (session.votingSet.length || 0)) {
+    broadcast({ type: 'live', live: Array.from(new Set(live.values())) })
+
+    // If a session is active, remove this attendee & their vote.
+    if (session && name) {
+      session.attendees = (session.attendees || []).filter(n => n !== name)
+      if (session.votes && session.votes[name]) {
+        delete session.votes[name]
+      }
+
+      // If nobody remains → end session immediately
+      if ((session.attendees || []).length === 0) {
+        endSession('no_attendees')
+        return
+      }
+
+      // If everyone remaining has voted → resolve now (prevents a stuck session)
+      const total = (session.attendees || []).length
+      const cast = Object.keys(session.votes || {}).length
+      if (cast >= total) {
         resolveVotes()
+      } else {
+        // also broadcast the updated session so clients update counts
+        broadcast({ type: 'session', session })
       }
     }
-    broadcast({ type: 'live', live: Array.from(new Set(live.values())) })
   })
+
 })

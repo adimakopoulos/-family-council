@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState, useRef } from 'react'
+import { useSnackQueue, SnackStack } from './components/Snackbar'
 import { ws } from './services/ws'
 import { format } from 'date-fns'
 import { v4 as uuid } from 'uuid'
@@ -18,21 +19,44 @@ type TabKey =   'session' | 'proposals'| 'rankings'
 
 
 // Prefer real files in /public/sounds; fall back to embedded beeps if loading fails.
-const FILE_SOUNDS: Record<'pass'|'reject'|'start'|'gavel', string> = {
+const FILE_SOUNDS: Record<'pass'|'reject'|'start'|'gavel'|'xp', string> = {
   pass:  '/sounds/pass.wav',
   reject:'/sounds/reject.wav',
   start: '/sounds/start.wav',
   gavel: '/sounds/gavel.wav',
-  xp:     '/sounds/xp.wav',    // NEW (place a small soft chime here)
-
+  xp:    '/sounds/xp.wav',
 };
 
-const VOLUMES: Record<'pass'|'reject'|'start'|'gavel', number> = {
+const TYRANT_COST = 20
+
+
+const VOLUMES: Record<'pass'|'reject'|'start'|'gavel'|'xp', number> = {
   pass: 0.50,
   reject: 0.50,
   start: 0.50,
-  gavel: 0.50,   // lower gavel so it doesn’t feel like a second pass
-}
+  gavel: 0.40,
+  xp: 0.35,
+};
+// function useInfluenceDelta(
+//   name: string | null,
+//   state: ServerState | null,
+//   onGain: (delta: number) => void
+// ) {
+//   const prev = React.useRef<number | null>(null)
+//   const curr = name && state?.users ? (state.users[name]?.influence ?? 0) : 0
+//
+//   React.useEffect(() => {
+//     if (prev.current == null) { prev.current = curr; return }
+//     const delta = curr - (prev.current ?? 0)
+//     if (delta > 0) {
+//       onGain(delta)
+//       playSound('xp').catch(()=>{})
+//     }
+//     prev.current = curr
+//   }, [curr, onGain])
+//
+//   return curr
+// }
 
 async function playSound(kind: 'pass'|'reject'|'start'|'gavel'|'xp') {
   try {
@@ -45,24 +69,45 @@ async function playSound(kind: 'pass'|'reject'|'start'|'gavel'|'xp') {
   }
 }
 
-function useInfluenceGain(name: string | null, state: ServerState | null) {
-  const [flash, setFlash] = React.useState(false)
+function useInfluenceGain(
+  name: string | null,
+  state: ServerState | null,
+  hydrated: boolean
+) {
   const prev = React.useRef<number | null>(null)
+  const initialized = React.useRef(false)
+  const [flash, setFlash] = React.useState(false)
+  const [delta, setDelta] = React.useState(0)
+
   const curr = name && state?.users ? (state.users[name]?.influence ?? 0) : 0
 
-  React.useEffect(() => {
-    if (prev.current == null) { prev.current = curr; return }
-    if (curr > (prev.current ?? 0)) {
+  useEffect(() => {
+    if (!hydrated) return
+
+    // First pass after hydration: baseline to current, do not emit delta
+    if (!initialized.current) {
+      initialized.current = true
+      prev.current = curr
+      setDelta(0)
+      return
+    }
+
+    const d = curr - (prev.current ?? curr)
+    if (d > 0) {
+      setDelta(d)
       setFlash(true)
-      playSound('xp').catch(()=>{})
-      const t = setTimeout(() => setFlash(false), 900)
-      return () => clearTimeout(t)
+      const id = setTimeout(() => setFlash(false), 600)
+      return () => clearTimeout(id)
+    } else {
+      setDelta(0)
     }
     prev.current = curr
-  }, [curr])
+  }, [curr, hydrated])
 
-  return { curr, flash }
+  return { curr, flash, delta }
 }
+
+
 
 
 function StatusBadge({ status }: { status: Proposal['status'] }) {
@@ -197,8 +242,9 @@ function Tabs({ tab, setTab }: { tab: TabKey, setTab: (t: TabKey)=>void }) {
 }
 
 
-function ProposalsTab({ state, you }:{ state: ServerState, you: You }) {
-  const { t } = useTranslation()
+function ProposalsTab({ state, you, pushSnack }:{
+  state: ServerState, you: You, pushSnack: (text: string, tone?: any)=>void
+}) {  const { t } = useTranslation()
   const [form, setForm] = useState({
       title: '',
       description: '',
@@ -224,6 +270,10 @@ function ProposalsTab({ state, you }:{ state: ServerState, you: You }) {
         voteDeadline: toLocalInput(new Date()),
         eventDate:''
         })
+    // Snackbar (optimistic)
+    pushSnack(t('snack.proposalCreated'), 'success')
+
+    setForm({ title:'', description:'', voteDeadline: toLocalInput(new Date()), eventDate:'' })
   }
 
 
@@ -424,13 +474,14 @@ function NoActiveSession() {
 }
 
 function ActiveSessionView({
-  state,
-  you,
-  session,
+  state, you, session, canUseTyrant, yourInfluence, pushSnack
 }: {
   state: ServerState
   you: You
   session: NonNullable<ServerState['session']>
+  canUseTyrant: boolean
+  yourInfluence: number
+  pushSnack: (text: string, tone?: any)=>void
 }) {
   const { t } = useTranslation()
 
@@ -546,13 +597,45 @@ function ActiveSessionView({
           </div>
 
           <div className="ml-auto flex items-center gap-2">
-            <button className="btn bg-amber-600 text-white hover:bg-amber-700" onClick={() => ws.tyrant('enforce')}>
+            <button
+              className={clsx(
+                'btn text-white',
+                canUseTyrant ? 'bg-amber-600 hover:bg-amber-700' : 'bg-amber-300 cursor-not-allowed opacity-60'
+              )}
+              disabled={!canUseTyrant}
+              onClick={() => {
+                if (!canUseTyrant) {
+                  pushSnack(t('snack.notEnough'), 'warning')
+                  return
+                }
+                ws.tyrant('enforce')
+                // If you don't already show a “lost influence” snack via your influence-delta hook:
+                pushSnack(t('snack.tyrantLost', { amount: TYRANT_COST }), 'warning')
+              }}
+            >
               {t('actions.tyrantEnforce') || 'Tyrant: Enforce'}
             </button>
-            <button className="btn bg-rose-600 text-white hover:bg-rose-700" onClick={() => ws.tyrant('veto')}>
+
+            <button
+              className={clsx(
+                'btn text-white',
+                canUseTyrant ? 'bg-rose-600 hover:bg-rose-700' : 'bg-rose-300 cursor-not-allowed opacity-60'
+              )}
+              disabled={!canUseTyrant}
+              onClick={() => {
+                if (!canUseTyrant) {
+                  pushSnack(t('snack.notEnough'), 'warning')
+                  return
+                }
+                ws.tyrant('veto')
+                // If you don't already show a “lost influence” snack via your influence-delta hook:
+                pushSnack(t('snack.tyrantLost', { amount: TYRANT_COST }), 'warning')
+              }}
+            >
               {t('actions.tyrantVeto') || 'Tyrant: Veto'}
             </button>
           </div>
+
         </div>
 
         {/* Author updates visible to everyone */}
@@ -617,19 +700,26 @@ function ActiveSessionView({
     </div>
   )
 }
-function SessionTab({ state, you }: { state: ServerState, you: You }) {
+function SessionTab({state, you, pushSnack}:{
+  state: ServerState, you: You, pushSnack: (text: string, tone?: any)=>void, yourInfluence: number
+}) {
   const { t } = useTranslation()
   const session = state.session
-
+  const yourInfluence =
+    (state.users && state.users[you.name]?.influence) != null
+      ? state.users[you.name]!.influence
+      : 0
+  const canUseTyrant = (yourInfluence || 0) >= TYRANT_COST
   // IMPORTANT: no hooks after a conditional return here.
   if (!session || session.status !== 'active') {
     return <NoActiveSession />
   }
-  return <ActiveSessionView state={state} you={you} session={session} />
+  return <ActiveSessionView state={state} you={you} session={session} canUseTyrant={canUseTyrant} yourInfluence={yourInfluence} pushSnack={pushSnack}/>
 }
 
 export default function App() {
   const { t } = useTranslation();
+  const [hydrated, setHydrated] = useState(false)
   const { name, setName } = useLocalName()
   const [connected, setConnected] = useState(false)
   const [live, setLive] = useState<string[]>([])
@@ -644,8 +734,17 @@ export default function App() {
   } | null>(null)
   const [preSession, setPreSession] = useState<{ text: string; until: number } | null>(null)
   const [ending, setEnding] = useState<any | null>(null)
-  const { curr: yourInfluence, flash: xpFlash } = useInfluenceGain(you?.name ?? null, state)
+  const { curr: yourInfluence, flash: xpFlash, delta: xpDelta } =
+    useInfluenceGain(you?.name ?? null, state, hydrated)
+  const { snacks, push: pushSnack, remove } = useSnackQueue()
 
+  useEffect(() => {
+    if (!hydrated) return
+    if (xpDelta > 0) {
+      playSound('xp').catch(() => {})
+      pushSnack(t('snack.gainInfluence', { amount: xpDelta }), 'success')
+    }
+  }, [xpDelta, hydrated, pushSnack, t])
 
   useEffect(() => {
     if (!name) return
@@ -653,7 +752,10 @@ export default function App() {
 
     const unsubs = [
       ws.onLive(setLive),
-      ws.onState(patch => setState(s => ({ ...(s || {} as any), ...patch }) as any)),
+      ws.onState(patch => {
+          setState(s => ({ ...(s || {} as any), ...patch }) as any)
+          if (!hydrated) setHydrated(true)
+        }),
       ws.onYou(setYou),
       ws.onSession(sess => {
         setState(s => ({ ...(s || {} as any), session: sess }) as any)
@@ -951,9 +1053,11 @@ export default function App() {
 
       <Tabs tab={tab} setTab={setTab} />
 
-      {tab === 'proposals' && <ProposalsTab state={state} you={you} />}
+      {tab === 'proposals' && <ProposalsTab state={state} you={you} pushSnack={pushSnack} />}
       {tab === 'rankings' && <RankingsTab state={state} you={you} />}
-      {tab === 'session' && <SessionTab state={state} you={you} />}
+      {tab === 'session' && <SessionTab state={state} you={you} pushSnack={pushSnack} />}
+      <SnackStack snacks={snacks} onClose={remove} />
+
     </div>
   )
 }

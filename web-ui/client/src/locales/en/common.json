@@ -43,6 +43,15 @@
     "noActive": "No active session.",
     "quote": "Democracy is not just the right to vote, but the right to live in dignity, the right to have your voice heard, and the right to shape the future we all share. If you do not share these values you do not belong in here!"
   },
+  "snack": {
+    "proposalCreated": "Proposal created successfully.",
+    "gainInfluence": "You gained {{amount}} influence.",
+    "tyrantLost": "You lost {{amount}} influence.",
+    "notEnough": "Not enough influence to use Tyrant."
+  },
+  "tyrant": {
+    "requires": "Requires {{cost}} influence"
+  },
 
   "lists": {
     "savedProposals": "Saved Proposals",

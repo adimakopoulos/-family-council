@@ -5,7 +5,6 @@ export function influenceScore(u: UserScore): number {
   return Number(u.influence || 0)
 }
 
-// Keep your INFLUENCE_TIERS as you set earlier…
 export const INFLUENCE_TIERS = [
   { min: 0,   title: 'Civic Newcomer',                           description: 'Learning the ropes; attends meetings and listens.' },
   { min: 10,  title: 'Registered Voter',                         description: 'Shows up at the ballot box; basic civic impact.' },
@@ -42,13 +41,12 @@ export function influenceTierIndex(score: number): number {
   return idx
 }
 
-// NEW: progress inside the current tier
 export function tierProgress(score: number) {
   const idx = influenceTierIndex(score)
   const curr = INFLUENCE_TIERS[idx]
   const next = INFLUENCE_TIERS[idx + 1] || null
   const currMin = curr.min
-  const nextMin = next ? next.min : curr.min + 50 // arbitrary span for last tier
+  const nextMin = next ? next.min : curr.min + 50
   const span = Math.max(1, nextMin - currMin)
   const pct = Math.max(0, Math.min(1, (score - currMin) / span))
   const toNext = Math.max(0, nextMin - score)

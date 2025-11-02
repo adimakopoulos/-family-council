@@ -33,636 +33,142 @@
       }
     },
     {
-      "id": "p_3m1wqnf12vu",
-      "title": "asdasd",
-      "description": "asdasd",
-      "voteDeadline": "2025-11-01T22:56:00.000Z",
-      "author": "alex",
-      "status": "passed",
-      "createdAt": 1762037793878,
-      "comments": [],
-      "stats": {
-        "rounds": 1,
-        "totalVotingMs": 2060,
-        "firstStartedAt": 1762037804903,
-        "resolvedAt": 1762037806963
-      }
-    },
-    {
-      "id": "p_0s6o6khcwtm8",
-      "title": "asdasd",
-      "description": "asdasdasd",
-      "voteDeadline": "2025-11-01T22:56:00.000Z",
-      "author": "alex",
-      "status": "rejected",
-      "createdAt": 1762037796999,
-      "comments": [],
-      "stats": {
-        "rounds": 1,
-        "totalVotingMs": 1461,
-        "firstStartedAt": 1762037811979,
-        "resolvedAt": 1762037813440
-      }
-    },
-    {
-      "id": "p_rliasixioz",
-      "title": "asdasd",
-      "description": "asdasd",
-      "voteDeadline": "2025-11-01T23:04:00.000Z",
-      "author": "alex",
-      "status": "rejected",
-      "createdAt": 1762038281524,
-      "comments": [],
-      "stats": {
-        "rounds": 1,
-        "totalVotingMs": 2751,
-        "firstStartedAt": 1762038298850,
-        "resolvedAt": 1762038301601
-      }
-    },
-    {
-      "id": "p_hl729eompq8",
-      "title": "asdasdas",
-      "description": "asdasdas",
-      "voteDeadline": "2025-11-01T23:04:00.000Z",
-      "author": "alex",
-      "status": "passed",
-      "createdAt": 1762038283920,
-      "comments": [],
-      "stats": {
-        "rounds": 1,
-        "totalVotingMs": 24949,
-        "firstStartedAt": 1762038306603,
-        "resolvedAt": 1762038331552
-      }
-    },
-    {
-      "id": "p_8w68b6tx75s",
-      "title": "asdasdasd",
-      "description": "asdasda",
-      "voteDeadline": "2025-11-01T23:04:00.000Z",
-      "author": "alex",
-      "status": "rejected",
-      "createdAt": 1762038286200,
-      "comments": [],
-      "stats": {
-        "rounds": 1,
-        "totalVotingMs": 4091,
-        "firstStartedAt": 1762038336559,
-        "resolvedAt": 1762038340650
-      }
-    },
-    {
-      "id": "p_n4f8jf9t21l",
-      "title": "c xcvcxv",
-      "description": "xcvxcvxcv",
-      "voteDeadline": "2025-11-01T23:06:00.000Z",
-      "author": "bot1",
-      "status": "rejected",
-      "createdAt": 1762038382169,
-      "comments": [
-        {
-          "author": "bot1",
-          "timestamp": 1762038414973,
-          "text": "xcvxcv"
-        }
-      ],
-      "stats": {
-        "rounds": 2,
-        "totalVotingMs": 33818,
-        "firstStartedAt": 1762038390230,
-        "resolvedAt": 1762038424048
-      }
-    },
-    {
-      "id": "p_y9d2rdvkc7g",
-      "title": "cvbcvbcv",
-      "description": "bcvbcvb",
-      "voteDeadline": "2025-11-01T23:29:00.000Z",
-      "author": "alex",
-      "status": "rejected",
-      "createdAt": 1762039757476,
-      "comments": [],
-      "stats": {
-        "rounds": 1,
-        "totalVotingMs": 10647,
-        "firstStartedAt": 1762039819100,
-        "resolvedAt": 1762039900206
-      }
-    },
-    {
-      "id": "p_a1wwwtgvs1t",
-      "title": "cvbcvbcvc",
-      "description": "eeeeeeeeee",
-      "voteDeadline": "2025-11-01T23:29:00.000Z",
-      "author": "alex",
-      "status": "rejected",
-      "createdAt": 1762039760507,
-      "comments": [],
-      "stats": {
-        "rounds": 1,
-        "totalVotingMs": 8886,
-        "firstStartedAt": 1762039905223,
-        "resolvedAt": 1762039914109
-      }
-    },
-    {
-      "id": "p_ytxlyo3ug6",
-      "title": "333333333",
+      "id": "p_p0ytocpa1x",
+      "title": "bbb",
       "description": "-",
-      "voteDeadline": "2025-11-01T23:29:00.000Z",
-      "author": "alex",
-      "status": "passed",
-      "createdAt": 1762039762835,
-      "comments": [],
-      "stats": {
-        "rounds": 1,
-        "totalVotingMs": 2481,
-        "firstStartedAt": 1762039919110,
-        "resolvedAt": 1762039921591
-      }
-    },
-    {
-      "id": "p_imfbmd7ua6k",
-      "title": "444444444",
-      "description": "-",
-      "voteDeadline": "2025-11-01T23:29:00.000Z",
-      "author": "alex",
-      "status": "passed",
-      "createdAt": 1762039764125,
-      "comments": [],
-      "stats": {
-        "rounds": 1,
-        "totalVotingMs": 2997,
-        "firstStartedAt": 1762039926604,
-        "resolvedAt": 1762039929601
-      }
-    },
-    {
-      "id": "p_63os6zl6mq3",
-      "title": "555555555",
-      "description": "-",
-      "voteDeadline": "2025-11-01T23:29:00.000Z",
-      "author": "alex",
-      "status": "passed",
-      "createdAt": 1762039765515,
-      "comments": [],
-      "stats": {
-        "rounds": 1,
-        "totalVotingMs": 4444,
-        "firstStartedAt": 1762039934608,
-        "resolvedAt": 1762039939052
-      }
-    },
-    {
-      "id": "p_vzy1w3rz61j",
-      "title": "6666666",
-      "description": "-",
-      "voteDeadline": "2025-11-01T23:29:00.000Z",
-      "author": "alex",
-      "status": "passed",
-      "createdAt": 1762039766912,
-      "comments": [
-        {
-          "author": "alex",
-          "timestamp": 1762040000295,
-          "text": "4"
-        },
-        {
-          "author": "alex",
-          "timestamp": 1762040125513,
-          "text": "5555"
-        }
-      ],
-      "stats": {
-        "rounds": 4,
-        "totalVotingMs": 77396,
-        "firstStartedAt": 1762039944068,
-        "resolvedAt": 1762040129206
-      }
-    },
-    {
-      "id": "p_x7b6g4vmxjs",
-      "title": "77777777",
-      "description": "-",
-      "voteDeadline": "2025-11-01T23:29:00.000Z",
+      "voteDeadline": "2025-11-02T12:44:00.000Z",
       "author": "alex",
       "status": "rejected",
-      "createdAt": 1762039768375,
+      "createdAt": 1762087509058,
       "comments": [],
       "stats": {
         "rounds": 1,
-        "totalVotingMs": 20703,
-        "firstStartedAt": 1762040134220,
-        "resolvedAt": 1762040438114
+        "totalVotingMs": 0,
+        "firstStartedAt": 1762087512997
       }
     },
     {
-      "id": "p_w9bjx3g1veb",
-      "title": "88888888888",
-      "description": "-",
-      "voteDeadline": "2025-11-01T23:29:00.000Z",
-      "author": "alex",
-      "status": "passed",
-      "createdAt": 1762039770149,
-      "comments": [],
-      "stats": {
-        "rounds": 1,
-        "totalVotingMs": 3045,
-        "firstStartedAt": 1762040443124,
-        "resolvedAt": 1762040446169
-      }
-    },
-    {
-      "id": "p_z8i7rw49l4r",
-      "title": "222222222",
-      "description": "222222",
-      "voteDeadline": "2025-11-01T23:34:00.000Z",
-      "author": "bot2",
-      "status": "passed",
-      "createdAt": 1762040087445,
-      "comments": [],
-      "stats": {
-        "rounds": 1,
-        "totalVotingMs": 21234,
-        "firstStartedAt": 1762040451183,
-        "resolvedAt": 1762040581648
-      }
-    },
-    {
-      "id": "p_q94et7hh00o",
-      "title": "1111111111111111",
-      "description": "11111111111",
-      "voteDeadline": "2025-11-01T23:34:00.000Z",
-      "author": "alex",
-      "status": "rejected",
-      "createdAt": 1762040088114,
-      "comments": [
-        {
-          "author": "alex",
-          "timestamp": 1762040600368,
-          "text": "15"
-        }
-      ],
-      "stats": {
-        "rounds": 2,
-        "totalVotingMs": 15287,
-        "firstStartedAt": 1762040586664,
-        "resolvedAt": 1762040601951
-      }
-    },
-    {
-      "id": "p_kna01eaf7h",
-      "title": "455454545454",
-      "description": "1251",
-      "voteDeadline": "2025-11-01T23:42:00.000Z",
-      "author": "alex",
-      "status": "rejected",
-      "createdAt": 1762040536605,
-      "comments": [
-        {
-          "author": "alex",
-          "timestamp": 1762040651957,
-          "text": "55"
-        }
-      ],
-      "stats": {
-        "rounds": 2,
-        "totalVotingMs": 54606,
-        "firstStartedAt": 1762040606968,
-        "resolvedAt": 1762040661574
-      }
-    },
-    {
-      "id": "p_2iqlqwr4ttq",
-      "title": "14444444",
-      "description": "747444",
-      "voteDeadline": "2025-11-01T23:42:00.000Z",
-      "author": "alex",
-      "status": "passed",
-      "createdAt": 1762040537296,
-      "comments": [],
-      "stats": {
-        "rounds": 1,
-        "totalVotingMs": 6062,
-        "firstStartedAt": 1762040666588,
-        "resolvedAt": 1762040672650
-      }
-    },
-    {
-      "id": "p_oyw5e69g2pa",
-      "title": "55",
-      "description": "-",
-      "voteDeadline": "2025-11-01T23:46:00.000Z",
-      "author": "bot5",
-      "status": "passed",
-      "createdAt": 1762040797378,
-      "comments": [],
-      "stats": {
-        "rounds": 1,
-        "totalVotingMs": 11311,
-        "firstStartedAt": 1762041239803,
-        "resolvedAt": 1762041251114
-      }
-    },
-    {
-      "id": "p_v4s3x759gt",
-      "title": "154",
-      "description": "-",
-      "voteDeadline": "2025-11-01T23:46:00.000Z",
-      "author": "alex",
-      "status": "rejected",
-      "createdAt": 1762040800771,
-      "comments": [
-        {
-          "author": "alex",
-          "timestamp": 1762041285469,
-          "text": "5454"
-        },
-        {
-          "author": "alex",
-          "timestamp": 1762041305726,
-          "text": "8787878"
-        },
-        {
-          "author": "alex",
-          "timestamp": 1762041318747,
-          "text": "8787878"
-        }
-      ],
-      "stats": {
-        "rounds": 4,
-        "totalVotingMs": 96471,
-        "firstStartedAt": 1762041256117,
-        "resolvedAt": 1762041309690
-      }
-    },
-    {
-      "id": "p_4225scwyz6u",
-      "title": "Ffggg",
-      "description": "-",
-      "voteDeadline": "2025-11-01T23:46:00.000Z",
+      "id": "p_ti2ewhpon9",
+      "title": "Usudu",
+      "description": "Jjjj",
+      "voteDeadline": "2025-11-02T12:45:00.000Z",
       "author": "Alekos",
       "status": "passed",
-      "createdAt": 1762040809815,
+      "createdAt": 1762087548074,
+      "comments": [],
+      "stats": {
+        "rounds": 1,
+        "totalVotingMs": 17528,
+        "firstStartedAt": 1762087697357,
+        "resolvedAt": 1762087714885
+      }
+    },
+    {
+      "id": "p_qv4rit6j9nl",
+      "title": "fbgdgf",
+      "description": "-",
+      "voteDeadline": "2025-11-02T12:48:00.000Z",
+      "author": "alex",
+      "status": "passed",
+      "createdAt": 1762087687487,
+      "comments": [],
+      "stats": {
+        "rounds": 1,
+        "totalVotingMs": 9387,
+        "firstStartedAt": 1762087719898,
+        "resolvedAt": 1762087729285
+      }
+    },
+    {
+      "id": "p_sigwg9azbyn",
+      "title": "154",
+      "description": "-",
+      "voteDeadline": "2025-11-02T12:49:00.000Z",
+      "author": "alex",
+      "status": "rejected",
+      "createdAt": 1762087754446,
+      "comments": [],
+      "stats": {
+        "rounds": 1,
+        "totalVotingMs": 25787,
+        "firstStartedAt": 1762087764567,
+        "resolvedAt": 1762087790354
+      }
+    },
+    {
+      "id": "p_qgst8tlcvm",
+      "title": "gh",
+      "description": "gh",
+      "voteDeadline": "2025-11-02T12:50:00.000Z",
+      "author": "alex",
+      "status": "passed",
+      "createdAt": 1762087826794,
+      "comments": [],
+      "stats": {
+        "rounds": 1,
+        "totalVotingMs": 10033,
+        "firstStartedAt": 1762087842462,
+        "resolvedAt": 1762087852495
+      }
+    },
+    {
+      "id": "p_0fd5wxqsj3xj",
+      "title": "gh",
+      "description": "gh",
+      "voteDeadline": "2025-11-02T12:50:00.000Z",
+      "author": "alex",
+      "status": "rejected",
+      "createdAt": 1762087828267,
       "comments": [],
       "stats": {
         "rounds": 1,
         "totalVotingMs": 0,
-        "firstStartedAt": 1762041352292
+        "firstStartedAt": 1762087857502
       }
     },
     {
-      "id": "p_mst2cpw6lpd",
-      "title": "7747474",
-      "description": "-",
-      "voteDeadline": "2025-11-02T00:02:00.000Z",
+      "id": "p_wmhkl7ku2k",
+      "title": "asd",
+      "description": "asd",
+      "voteDeadline": "2025-11-02T12:58:00.000Z",
       "author": "alex",
-      "status": "passed",
-      "createdAt": 1762041773190,
+      "status": "rejected",
+      "createdAt": 1762088333653,
       "comments": [],
       "stats": {
         "rounds": 1,
-        "totalVotingMs": 22789,
-        "firstStartedAt": 1762041781003,
-        "resolvedAt": 1762042168490
+        "totalVotingMs": 34713,
+        "firstStartedAt": 1762088380577,
+        "resolvedAt": 1762088415290
       }
     },
     {
-      "id": "p_edpwlha2eme",
-      "title": "254841",
+      "id": "p_fuqbzdb666l",
+      "title": "bvbvbvbvbv",
       "description": "-",
-      "voteDeadline": "2025-11-02T00:02:00.000Z",
+      "voteDeadline": "2025-11-02T13:00:00.000Z",
       "author": "alex",
-      "status": "passed",
-      "createdAt": 1762041775652,
-      "comments": [
-        {
-          "author": "alex",
-          "timestamp": 1762042348011,
-          "text": "25625626"
-        }
-      ],
-      "stats": {
-        "rounds": 2,
-        "totalVotingMs": 81898,
-        "firstStartedAt": 1762042173499,
-        "resolvedAt": 1762042353294
-      }
-    },
-    {
-      "id": "p_ez184xut3eg",
-      "title": "141155115",
-      "description": "-",
-      "voteDeadline": "2025-11-02T00:07:00.000Z",
-      "author": "alex",
-      "status": "passed",
-      "createdAt": 1762042042716,
-      "comments": [
-        {
-          "author": "alex",
-          "timestamp": 1762042395593,
-          "text": "15151"
-        },
-        {
-          "author": "alex",
-          "timestamp": 1762042414109,
-          "text": "155811"
-        },
-        {
-          "author": "alex",
-          "timestamp": 1762042442319,
-          "text": "155811"
-        }
-      ],
-      "stats": {
-        "rounds": 4,
-        "totalVotingMs": 428992,
-        "firstStartedAt": 1762042358307,
-        "resolvedAt": 1762042471518
-      }
-    },
-    {
-      "id": "p_pdk9jak1ynq",
-      "title": "10115151515",
-      "description": "-",
-      "voteDeadline": "2025-11-02T00:07:00.000Z",
-      "author": "alex",
-      "status": "rejected",
-      "createdAt": 1762042045219,
-      "comments": [
-        {
-          "author": "alex",
-          "timestamp": 1762042516205,
-          "text": "56"
-        },
-        {
-          "author": "alex",
-          "timestamp": 1762042524469,
-          "text": "56256"
-        }
-      ],
-      "stats": {
-        "rounds": 3,
-        "totalVotingMs": 238133,
-        "firstStartedAt": 1762042476526,
-        "resolvedAt": 1762042527943
-      }
-    },
-    {
-      "id": "p_uqdfmcb3zu",
-      "title": "326262626",
-      "description": "-",
-      "voteDeadline": "2025-11-02T00:07:00.000Z",
-      "author": "alex",
-      "status": "rejected",
-      "createdAt": 1762042047729,
+      "status": "open",
+      "createdAt": 1762088439806,
       "comments": [],
       "stats": {
         "rounds": 1,
         "totalVotingMs": 0,
-        "firstStartedAt": 1762042532947
-      }
-    },
-    {
-      "id": "p_5m8sgfybhfl",
-      "title": "25",
-      "description": "-",
-      "voteDeadline": "2025-11-02T00:46:00.000Z",
-      "author": "alex",
-      "status": "rejected",
-      "createdAt": 1762044411511,
-      "comments": [],
-      "stats": {
-        "rounds": 1,
-        "totalVotingMs": 0,
-        "firstStartedAt": 1762044415121
-      }
-    },
-    {
-      "id": "p_w7w7vmo9vil",
-      "title": "22",
-      "description": "-",
-      "voteDeadline": "2025-11-02T00:47:00.000Z",
-      "author": "alex",
-      "status": "rejected",
-      "createdAt": 1762044435458,
-      "comments": [],
-      "stats": {
-        "rounds": 1,
-        "totalVotingMs": 0,
-        "firstStartedAt": 1762044444315
-      }
-    },
-    {
-      "id": "p_1k7a9jq2tmt",
-      "title": "555",
-      "description": "-",
-      "voteDeadline": "2025-11-02T00:47:00.000Z",
-      "author": "alex",
-      "status": "rejected",
-      "createdAt": 1762044475552,
-      "comments": [],
-      "stats": {
-        "rounds": 1,
-        "totalVotingMs": 0,
-        "firstStartedAt": 1762044480116
-      }
-    },
-    {
-      "id": "p_zpeos5nzekh",
-      "title": "55555",
-      "description": "-",
-      "voteDeadline": "2025-11-02T00:58:00.000Z",
-      "author": "alex",
-      "status": "passed",
-      "createdAt": 1762045106588,
-      "comments": [],
-      "stats": {
-        "rounds": 1,
-        "totalVotingMs": 4468,
-        "firstStartedAt": 1762045113404,
-        "resolvedAt": 1762045117873
-      }
-    },
-    {
-      "id": "p_xggoex4gpu",
-      "title": "44",
-      "description": "-",
-      "voteDeadline": "2025-11-02T00:58:00.000Z",
-      "author": "alex",
-      "status": "passed",
-      "createdAt": 1762045140404,
-      "comments": [],
-      "stats": {
-        "rounds": 1,
-        "totalVotingMs": 2117,
-        "firstStartedAt": 1762045173896,
-        "resolvedAt": 1762045176013
-      }
-    },
-    {
-      "id": "p_wi8kzcaoi5g",
-      "title": "55858",
-      "description": "-",
-      "voteDeadline": "2025-11-02T00:59:00.000Z",
-      "author": "alex",
-      "status": "passed",
-      "createdAt": 1762045143386,
-      "comments": [],
-      "stats": {
-        "rounds": 1,
-        "totalVotingMs": 3283,
-        "firstStartedAt": 1762045181015,
-        "resolvedAt": 1762045184298
-      }
-    },
-    {
-      "id": "p_b42l1tuw7e7",
-      "title": "225",
-      "description": "-",
-      "voteDeadline": "2025-11-02T00:59:00.000Z",
-      "author": "alex",
-      "status": "passed",
-      "createdAt": 1762045145542,
-      "comments": [],
-      "stats": {
-        "rounds": 1,
-        "totalVotingMs": 5125,
-        "firstStartedAt": 1762045189314,
-        "resolvedAt": 1762045194439
-      }
-    },
-    {
-      "id": "p_vwoqv0egd9",
-      "title": "5656",
-      "description": "55",
-      "voteDeadline": "2025-11-02T01:00:00.000Z",
-      "author": "45",
-      "status": "passed",
-      "createdAt": 1762045211430,
-      "comments": [],
-      "stats": {
-        "rounds": 1,
-        "totalVotingMs": 4149,
-        "firstStartedAt": 1762045219463,
-        "resolvedAt": 1762045223612
+        "firstStartedAt": 1762088443694
       }
     }
   ],
   "users": {
-    "45": {
-      "name": "45",
-      "influence": 25
-    },
     "alex": {
       "name": "alex",
-      "democracy": 0,
-      "tyrant": 0,
-      "influence": 25
+      "influence": 45
     },
     "Alekos": {
       "name": "Alekos",
+      "influence": 0
+    },
+    "b bbb": {
+      "name": "b bbb",
       "influence": 0
     }
   },

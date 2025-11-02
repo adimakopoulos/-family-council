@@ -2,7 +2,15 @@
   "app": { "title": "Οικογενειακό Συμβούλιο" },
   "role": { "admin": "Διαχειριστής (alex)", "member": "Μέλος" },
   "header": { "live": "Συνδεδεμένοι" },
-
+  "snack": {
+    "proposalCreated": "Η πρόταση δημιουργήθηκε επιτυχώς.",
+    "gainInfluence": "Κερδίσατε {{amount}} επιρροή.",
+    "tyrantLost": "Χάσατε {{amount}} επιρροή.",
+    "notEnough": "Μη επαρκής επιρροή για χρήση Τύραννου."
+  },
+  "tyrant": {
+    "requires": "Απαιτεί {{cost}} επιρροή"
+  },
   "tabs": {
     "session": "Ενεργή Συνεδρία",
     "proposals": "Προτάσεις",
