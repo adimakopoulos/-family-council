@@ -15,7 +15,13 @@
     "description": "Description",
     "voteDeadline": "Vote Deadline",
     "eventDateOpt": "Event Date (optional)",
-    "autoFilled": "Auto-filled to the current time."
+    "autoFilled": "Auto-filled to the current time.",
+    "titlePlaceholder": "(required) Give your proposal a clear, short title",
+    "eventDatePlaceholder": "(optional) Choose when the proposal would happen",
+    "descriptionPlaceholder": "(optional) Add details, context, or constraints",
+    "creationDateLocked": "Creation date (locked)",
+    "authorLocked": "Author (locked)",
+    "titleMissingAlert": "Please fill in the Title."
   },
 
   "status": { "open": "Open", "passed": "Passed", "rejected": "Rejected" },
@@ -31,7 +37,8 @@
     "votingInProgress": "Voting in progress — join in Active Session",
     "submit": "Submit",
     "tyrantEnforce": "Tyrant: Enforce",
-    "tyrantVeto": "Tyrant: Veto"
+    "tyrantVeto": "Tyrant: Veto",
+    "deleteConfirm": "Delete proposal?"
   },
 
   "session": {
@@ -55,7 +62,11 @@
 
   "lists": {
     "savedProposals": "Saved Proposals",
-    "comments": "Comments"
+    "comments": "Comments",
+    "noProposals": "No proposals yet.",
+    "noEditRights": "No edit rights",
+    "authorUpdates": "Author updates",
+    "proposedDate": "Proposed date:"
   },
 
   "meta": {

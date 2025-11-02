@@ -24,7 +24,7 @@ export default function ProposalsTab({
 
   const create = () => {
     if (!form.title){
-      alert('Please fill Title. / Συμπληρώστε Τίτλο.')
+      alert(t('forms.titleMissingAlert'))
       return
     }
     ws.createProposal({
@@ -49,27 +49,62 @@ export default function ProposalsTab({
       <div className="card p-5">
         <h2 className="text-lg font-semibold mb-4">{t('forms.newProposal')}</h2>
         <div className="grid gap-3">
+          {/* Title (required) */}
           <label className="label">{t('forms.title')}</label>
-          <input className="input" value={form.title} onChange={e=>setForm({...form, title:e.target.value})} />
+          <input
+            className="input"
+            value={form.title}
+            onChange={e => setForm({ ...form, title: e.target.value })}
+            placeholder={t('forms.titlePlaceholder')}
+          />
 
+          {/* Event date (optional) */}
+          <label className="label">{t('forms.eventDateOpt')}</label>
+          <input
+            type="datetime-local"
+            className="input"
+            value={form.eventDate}
+            onChange={e => setForm({ ...form, eventDate: e.target.value })}
+            placeholder={t('forms.eventDatePlaceholder')}
+            aria-label={t('forms.eventDatePlaceholder')}
+            title={t('forms.eventDatePlaceholder')}
+          />
+
+          {/* Description (optional) */}
           <label className="label">{t('forms.description')}</label>
-          <textarea className="input h-24" value={form.description} onChange={e=>setForm({...form, description:e.target.value})} />
+          <textarea
+            className="input h-24"
+            value={form.description}
+            onChange={e => setForm({ ...form, description: e.target.value })}
+            placeholder={t('forms.descriptionPlaceholder')}
+          />
 
-          <label className="label">{t('forms.voteDeadline')}</label>
+          {/* Separator */}
+          <div className="my-4 h-px bg-slate-200" role="separator" aria-hidden />
+
+          {/* Read-only / locked fields */}
+          <label className="label">{t('forms.creationDateLocked')}</label>
           <input
             type="datetime-local"
             className="input input--readonly pr-20"
             value={form.voteDeadline}
-            onChange={e=>setForm({...form, voteDeadline:e.target.value})}
             readOnly
             tabIndex={-1}
           />
 
-          <label className="label">{t('forms.eventDateOpt')}</label>
-          <input type="datetime-local" className="input" value={form.eventDate} onChange={e=>setForm({...form, eventDate:e.target.value})} />
+          <label className="label">{t('forms.authorLocked')}</label>
+          <input
+            className="input input--readonly"
+            value={you.name}
+            readOnly
+            tabIndex={-1}
+          />
 
-          <button className="btn-primary mt-2" onClick={create}>{t('actions.create')}</button>
+          <button className="btn-primary mt-2" onClick={create}>
+            {t('actions.create')}
+          </button>
         </div>
+
       </div>
 
       <div className="card p-5">
