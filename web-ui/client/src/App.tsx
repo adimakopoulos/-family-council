@@ -362,65 +362,74 @@ function RankingsTab({ state, you }:{ state: ServerState; you: You }) {
     </div>
   )
 }
-
-function SessionTab({ state, you }:{ state: ServerState, you: You}) {
+function NoActiveSession() {
   const { t } = useTranslation()
-  const session = state.session
-  const yourVote = (session?.votes && (session.votes as any)[you.name]) as VoteChoice | undefined || null
+  return (
+    <div className="mx-auto max-w-4xl px-4 mt-6">
+      <div className="card p-6 text-center">
+        <p className="text-sm text-slate-600 mb-4">{t('session.noActive')}</p>
+        <p className="text-xs text-slate-500">{t('session.quote')}</p>
+      </div>
+    </div>
+  )
+}
 
-  const [now, setNow] = useState(Date.now())
-  const [comment, setComment] = useState('')
-  const [newEventDate, setNewEventDate] = useState('')
+function ActiveSessionView({
+  state,
+  you,
+  session,
+}: {
+  state: ServerState
+  you: You
+  session: NonNullable<ServerState['session']>
+}) {
+  const { t } = useTranslation()
 
-  useEffect(()=>{
-    const t = setInterval(()=>setNow(Date.now()), 500)
-    return ()=>clearInterval(t)
+  // ---- Hooks that used to live in SessionTab (now ALWAYS mounted only in this component)
+  const [now, setNow] = React.useState(Date.now())
+  const [comment, setComment] = React.useState('')
+  const [newEventDate, setNewEventDate] = React.useState('')
+
+  React.useEffect(() => {
+    const id = setInterval(() => setNow(Date.now()), 500)
+    return () => clearInterval(id)
   }, [])
 
-  useEffect(() => {
-      setComment('')
-      setNewEventDate('')
+  React.useEffect(() => {
+    setComment('')
+    setNewEventDate('')
   }, [session?.proposalId])
 
-  if (!session || session.status !== 'active') {
-    return (
-      <div className="mx-auto max-w-4xl px-4 mt-6">
-        <div className="card p-6 text-center">
-          <p className="text-sm text-slate-600 mb-4">{t('session.noActive')}</p>
-          <p className="text-xs text-slate-500">{t('session.quote')}</p>
-        </div>
-      </div>
-    )
-  }
+  // ---- Safe derivations
+  const proposal = state.proposals.find(p => p.id === session.proposalId)
+  const yourVote: VoteChoice | null =
+    (session.votes && (session.votes as Record<string, VoteChoice>)[you.name]) || null
 
-  const proposal = state.proposals.find(p=>p.id===session.proposalId)
-  const deadline = session.startedAt + session.durationSeconds*1000
-  const remaining = Math.max(0, Math.floor((deadline - now)/1000))
-  const total = session.attendees.length
-  const cast = Object.keys(session.votes || {}).length
-  const everyoneVoted = cast >= total
-  const votedDisplay = Object.entries(session.votes || {}).map(([k,v])=> `${k}: ${v}`).join(', ')
+  const deadline = (session.startedAt || 0) + (session.durationSeconds || 0) * 1000
+  const remaining = Math.max(0, Math.floor((deadline - now) / 1000))
 
-  const castVote = (choice: VoteChoice) => {
-    ws.vote(choice)
-  }
+  const attendees: string[] = session.attendees ?? []
+  const votesMap: Record<string, VoteChoice> = session.votes ?? {}
+  const votingSet: string[] = (session as any).votingSet ?? attendees
+  const cast = votingSet.reduce((n, name) => n + (votesMap[name] ? 1 : 0), 0)
+  const total = votingSet.length
+  const lateJoiners = attendees.filter(n => !votingSet.includes(n))
 
   const canAuthorAdjust = proposal && proposal.author === you.name
-  const needAdjust = Boolean(state.session?.awaitingAuthorAdjust)
+  const needAdjust = Boolean(session?.awaitingAuthorAdjust)
+
+  const castVote = (choice: VoteChoice) => ws.vote(choice)
 
   return (
     <div className="mx-auto max-w-4xl px-4 mt-6">
       <div className="card p-5">
-
-
-
+        {/* Header */}
         <div className="flex items-start justify-between gap-4">
           <div className="min-w-0">
             <div className="text-sm text-slate-500">
               {t('session.voting') || 'Voting'}
             </div>
 
-            {/* Title & Description clearly */}
             <h3 className="mt-1 text-xl font-bold text-slate-900">{proposal?.title}</h3>
             {proposal?.description ? (
               <div className="mt-2 p-3 rounded-lg bg-slate-50 border text-sm text-slate-700 whitespace-pre-wrap break-words">
@@ -428,28 +437,31 @@ function SessionTab({ state, you }:{ state: ServerState, you: You}) {
               </div>
             ) : null}
 
-            {/* Votes */}
+            {/* Votes (required voters only) */}
             <div className="mt-3 text-sm">
-              <span className="text-slate-600">
-                {t('session.votesCast') || 'Votes cast'}:
-              </span>{' '}
-              <span className="font-semibold">
-                {cast}/{total}
-              </span>
+              <span className="text-slate-600">{t('session.votesCast') || 'Votes cast'}:</span>{' '}
+              <span className="font-semibold">{cast}/{total}</span>
+              {lateJoiners.length > 0 && (
+                <span className="ml-2 text-xs text-slate-500">
+                  (+{lateJoiners.length} joined late; counted next round)
+                </span>
+              )}
             </div>
           </div>
 
           {/* Time left */}
           <div className="shrink-0 text-right">
             <div className="text-xs text-slate-500">{t('session.timeLeft') || 'Time left'}</div>
-            <div className={clsx('text-2xl font-extrabold tracking-tight',
-              remaining <= 10 ? 'text-rose-600' : 'text-slate-900')}>
+            <div className={clsx(
+              'text-2xl font-extrabold tracking-tight',
+              remaining <= 10 ? 'text-rose-600' : 'text-slate-900'
+            )}>
               {Math.floor(remaining/60)}:{String(remaining%60).padStart(2,'0')}
             </div>
           </div>
         </div>
 
-        {/* Actions — neutral, equally emphasized */}
+        {/* Actions */}
         <div className="mt-5 flex items-center gap-3">
           <button
             className={clsx(
@@ -457,7 +469,7 @@ function SessionTab({ state, you }:{ state: ServerState, you: You}) {
               'bg-white text-slate-800 border-slate-300 hover:bg-emerald-50 hover:border-emerald-300',
               yourVote === 'accept' && 'ring-2 ring-emerald-400'
             )}
-            onClick={()=>castVote('accept')}
+            onClick={() => castVote('accept')}
           >
             {t('actions.accept') || 'Accept'}
           </button>
@@ -468,7 +480,7 @@ function SessionTab({ state, you }:{ state: ServerState, you: You}) {
               'bg-white text-slate-800 border-slate-300 hover:bg-rose-50 hover:border-rose-300',
               yourVote === 'reject' && 'ring-2 ring-rose-400'
             )}
-            onClick={()=>castVote('reject')}
+            onClick={() => castVote('reject')}
           >
             {t('actions.reject') || 'Reject'}
           </button>
@@ -485,10 +497,10 @@ function SessionTab({ state, you }:{ state: ServerState, you: You}) {
           </div>
 
           <div className="ml-auto flex items-center gap-2">
-            <button className="btn bg-amber-600 text-white hover:bg-amber-700" onClick={()=>ws.tyrant('enforce')}>
+            <button className="btn bg-amber-600 text-white hover:bg-amber-700" onClick={() => ws.tyrant('enforce')}>
               {t('actions.tyrantEnforce') || 'Tyrant: Enforce'}
             </button>
-            <button className="btn bg-rose-600 text-white hover:bg-rose-700" onClick={()=>ws.tyrant('veto')}>
+            <button className="btn bg-rose-600 text-white hover:bg-rose-700" onClick={() => ws.tyrant('veto')}>
               {t('actions.tyrantVeto') || 'Tyrant: Veto'}
             </button>
           </div>
@@ -502,7 +514,7 @@ function SessionTab({ state, you }:{ state: ServerState, you: You}) {
             </div>
             <ul className="space-y-2 text-sm">
               {proposal.comments
-                .slice()                         // don't mutate original
+                .slice()
                 .sort((a,b)=>a.timestamp-b.timestamp)
                 .map((c, idx) => (
                   <li key={idx} className="p-2 rounded-lg bg-slate-50 border">
@@ -512,7 +524,8 @@ function SessionTab({ state, you }:{ state: ServerState, you: You}) {
                     {c.text ? <div className="mt-1">{c.text}</div> : null}
                     {c.eventDate ? (
                       <div className="mt-1 text-slate-700 text-xs">
-                        Proposed new date: <span className="font-medium">
+                        Proposed new date:{' '}
+                        <span className="font-medium">
                           {format(new Date(c.eventDate), 'PPpp', { locale: dfLocale() })}
                         </span>
                       </div>
@@ -522,21 +535,48 @@ function SessionTab({ state, you }:{ state: ServerState, you: You}) {
             </ul>
           </div>
         ) : null}
+
+        {/* Author adjust */}
         {canAuthorAdjust && needAdjust && (
           <div className="mt-5 border-t pt-4">
-            <div className="text-sm font-medium mb-2">Not unanimous? Add comment & adjust event date / Μη ομόφωνο; Σχόλιο & αλλαγή ημερομηνίας</div>
-            <textarea className="input h-20" placeholder="Comment / Σχόλιο" value={comment} onChange={e=>setComment(e.target.value)} />
+            <div className="text-sm font-medium mb-2">
+              Not unanimous? Add comment & adjust event date / Μη ομόφωνο; Σχόλιο & αλλαγή ημερομηνίας
+            </div>
+            <textarea
+              className="input h-20"
+              placeholder="Comment / Σχόλιο"
+              value={comment}
+              onChange={e => setComment(e.target.value)}
+            />
             <div className="mt-2 flex gap-2">
-              <input type="datetime-local" className="input" value={newEventDate} onChange={e=>setNewEventDate(e.target.value)} />
-              <button className="btn-secondary" onClick={()=>ws.authorAdjust(session.proposalId, comment, newEventDate || null)}>Submit / Υποβολή</button>
+              <input
+                type="datetime-local"
+                className="input"
+                value={newEventDate}
+                onChange={e => setNewEventDate(e.target.value)}
+              />
+              <button
+                className="btn-secondary"
+                onClick={() => ws.authorAdjust(session.proposalId, comment, newEventDate || null)}
+              >
+                Submit / Υποβολή
+              </button>
             </div>
           </div>
         )}
-
-
       </div>
     </div>
   )
+}
+function SessionTab({ state, you }: { state: ServerState, you: You }) {
+  const { t } = useTranslation()
+  const session = state.session
+
+  // IMPORTANT: no hooks after a conditional return here.
+  if (!session || session.status !== 'active') {
+    return <NoActiveSession />
+  }
+  return <ActiveSessionView state={state} you={you} session={session} />
 }
 
 export default function App() {

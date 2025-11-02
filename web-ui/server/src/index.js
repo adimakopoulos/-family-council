@@ -90,18 +90,22 @@ function startVotingSession() {
 
   proposal.stats = proposal.stats || { rounds: 1, totalVotingMs: 0, firstStartedAt: Date.now() }
 
+  const currentLive = Array.from(new Set(live.values()))
   session = {
     id: 's_' + Math.random().toString(36).slice(2),
     proposalId: proposal.id,
     startedAt: Date.now(),
     durationSeconds: state.settings.countdownSeconds || 180,
     votes: {},
-    attendees: Array.from(new Set(live.values())),
+    attendees: currentLive.slice(),      // for UI
+    votingSet: currentLive.slice(),      // ← frozen for this round
+    round: 1,                            // ← round counter
     status: 'active',
     awaitingAuthorAdjust: false
   }
   broadcast({ type: 'session', session })
 }
+
 
 
 
@@ -214,17 +218,17 @@ function resolveVotes() {
   if (!session) return
   const proposal = state.proposals.find(p=>p.id===session.proposalId)
   const votes = session.votes
-  const names = session.attendees
-  const allVoted = names.every(n => votes[n])
+  const required = session.votingSet || session.attendees || []
+  const allVoted = required.every(n => votes[n])
   if (!allVoted) return
+
+  // accumulate time spent in this final round
+  proposal.stats = proposal.stats || { rounds: 1, totalVotingMs: 0, firstStartedAt: session.startedAt }
+  proposal.stats.totalVotingMs += (Date.now() - session.startedAt)
+  proposal.stats.resolvedAt = Date.now()
 
   const uniqueVotes = new Set(Object.values(votes))
   if (uniqueVotes.size === 1) {
-    // accumulate time spent in this final round
-    proposal.stats = proposal.stats || { rounds: 1, totalVotingMs: 0, firstStartedAt: session.startedAt }
-    proposal.stats.totalVotingMs += (Date.now() - session.startedAt)
-    proposal.stats.resolvedAt = Date.now()
-
     const only = uniqueVotes.values().next().value
     if (only === 'accept') {
       proposal.status = 'passed'
@@ -232,20 +236,20 @@ function resolveVotes() {
       saveState()
       broadcast({ type: 'state', patch: { proposals: state.proposals, users: state.users } })
       broadcast({ type: 'sound', kind: 'pass' })
-      broadcast({ type: 'sound', kind: 'gavel' })        // NEW gavel
+      broadcast({ type: 'sound', kind: 'gavel' })
       scheduleReminder(proposal)
     } else {
       proposal.status = 'rejected'
       saveState()
       broadcast({ type: 'state', patch: { proposals: state.proposals } })
       broadcast({ type: 'sound', kind: 'reject' })
-      broadcast({ type: 'sound', kind: 'gavel' })        // NEW gavel
+      broadcast({ type: 'sound', kind: 'gavel' })
     }
 
-    // record in meeting items
+    // Record in meeting items — count accept/reject on the REQUIRED set
     if (meeting && meeting.status === 'active') {
-      const acceptCount = Object.values(votes).filter(v => v === 'accept').length
-      const rejectCount = Object.values(votes).filter(v => v === 'reject').length
+      const acceptCount = required.filter(n => votes[n] === 'accept').length
+      const rejectCount = required.filter(n => votes[n] === 'reject').length
       meeting.items.push({
         id: proposal.id,
         title: proposal.title,
@@ -257,7 +261,6 @@ function resolveVotes() {
       })
     }
 
-    // Next proposal or end meeting — pass outcome for interlude
     const lastOutcome = { id: proposal.id, title: proposal.title, outcome: proposal.status }
     scheduleNextWithInterludeOrEnd(lastOutcome)
   } else {
@@ -266,6 +269,7 @@ function resolveVotes() {
     broadcast({ type: 'session', session })
   }
 }
+
 
 
 wss.on('connection', (socket) => {
@@ -339,15 +343,15 @@ wss.on('connection', (socket) => {
       } else if (msg.type === 'vote') {
         if (!session) return
         const name = myName
-        // If you weren't in the attendee list when the session started but you're live now,
-        // auto-add you so your vote counts.
         const currentLive = Array.from(new Set(live.values()))
+
+        // Add to attendees for display (optional)
         if (!session.attendees.includes(name) && currentLive.includes(name)) {
           session.attendees.push(name)
         }
 
-        // Still guard against non-live or duplicate/no-name
-        if (!session.attendees.includes(name)) return
+        // Only accept votes from currently live people
+        if (!currentLive.includes(name)) return
 
         session.votes[name] = msg.choice // 'accept' | 'reject'
         broadcast({ type: 'session', session })
@@ -373,14 +377,18 @@ wss.on('connection', (socket) => {
 
 
         if (session && session.proposalId === proposalId) {
-          // accumulate time spent in this round so far, increase rounds
+          // accumulate time spent so far, increase rounds
           p.stats = p.stats || { rounds: 1, totalVotingMs: 0, firstStartedAt: session.startedAt }
           p.stats.totalVotingMs += (Date.now() - session.startedAt)
           p.stats.rounds = (p.stats.rounds || 1) + 1
 
+          const currentLive = Array.from(new Set(live.values()))
           session.votes = {}
           session.startedAt = Date.now()
           session.awaitingAuthorAdjust = false
+          session.round = (session.round || 1) + 1
+          session.votingSet = currentLive.slice()            // ← freeze new required set
+          session.attendees = Array.from(new Set([...session.attendees, ...currentLive])) // track everyone seen
         }
         saveState()
         broadcast({ type: 'state', patch: { proposals: state.proposals } })
@@ -492,6 +500,13 @@ wss.on('connection', (socket) => {
 
   socket.on('close', () => {
     live.delete(socket)
+    if (session && session.votingSet?.includes(myName) && !session.votes?.[myName]) {
+      session.votingSet = session.votingSet.filter(n => n !== myName)
+      broadcast({ type: 'session', session })
+      if ((Object.keys(session.votes).length) >= (session.votingSet.length || 0)) {
+        resolveVotes()
+      }
+    }
     broadcast({ type: 'live', live: Array.from(new Set(live.values())) })
   })
 })
