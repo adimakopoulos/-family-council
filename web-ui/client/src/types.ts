@@ -31,16 +31,21 @@ export type Session = {
   proposalId: string
   startedAt: number
   durationSeconds: number
-  votes: Record<string, VoteChoice>
+  votes: Record<string, 'accept' | 'reject'>
   attendees: string[]
   status: 'active' | 'ended'
+  awaitingAuthorAdjust?: boolean
   reason?: string
+
+  // NEW (optional for safety)
+  votingSet?: string[]
+  round?: number
 }
 
-export type UserPoints = {
+
+export type User = {
   name: string
-  democracy: number
-  tyrant: number
+  influence: number
 }
 
 export type Settings = {

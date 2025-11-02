@@ -192,16 +192,16 @@ function scheduleNextWithInterludeOrEnd(lastOutcome) {
 
 
 function pointsForPass(proposal, votes) {
-  // unanimous accept -> author +10, every accepter +5
+  // unanimous accept -> author +10 influence, every accepter (not author) +5 influence
   const uniqueVotes = new Set(Object.values(votes))
   if (uniqueVotes.size === 1 && uniqueVotes.has('accept')) {
     const author = proposal.author
-    state.users[author] = state.users[author] || { name: author, democracy: 0, tyrant: 0 }
-    state.users[author].democracy += 10
+    state.users[author] = state.users[author] || { name: author, influence: 0 }
+    state.users[author].influence += 10
     for (const [name, choice] of Object.entries(votes)) {
       if (name !== author && choice === 'accept') {
-        state.users[name] = state.users[name] || { name, democracy: 0, tyrant: 0 }
-        state.users[name].democracy += 5
+        state.users[name] = state.users[name] || { name, influence: 0 }
+        state.users[name].influence += 5
       }
     }
     saveState()
@@ -281,7 +281,7 @@ wss.on('connection', (socket) => {
       if (msg.type === 'hello') {
         myName = String(msg.name || '').trim()
         live.set(socket, myName)
-        if (!state.users[myName]) state.users[myName] = { name: myName, democracy: 0, tyrant: 0 }
+        if (!state.users[myName]) state.users[myName] = { name: myName, influence: 0 }
         saveState()
         socket.send(JSON.stringify({ type: 'welcome', state: { ...state, live: Array.from(new Set(live.values())), session }, you: { name: myName, isAdmin: myName.toLowerCase() === 'alex' } }))
         broadcast({ type: 'live', live: Array.from(new Set(live.values())) })
@@ -400,8 +400,8 @@ wss.on('connection', (socket) => {
         if (!p) return
 
         // award tyrant points
-        state.users[myName] = state.users[myName] || { name: myName, democracy: 0, tyrant: 0 }
-        state.users[myName].tyrant += 20
+        state.users[myName] = state.users[myName] || { name: myName, influence: 0 }
+        state.users[myName].influence -= 20
 
         if (action === 'enforce') {
           p.status = 'passed'

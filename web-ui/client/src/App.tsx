@@ -3,13 +3,13 @@ import { ws } from './services/ws'
 import { format } from 'date-fns'
 import { v4 as uuid } from 'uuid'
 import { Proposal, VoteChoice, ServerState, You } from './types'
-import { TIERS, tierIndexForScore, netScore } from './utils/rankings'
 import clsx from 'clsx'
 import { useTranslation } from 'react-i18next'
 import i18n from './i18n'
 import { enUS, el as elLocale } from 'date-fns/locale'
 import { celebratePass } from './confetti'
-
+import XPBar from './components/XPBar'
+import { tierProgress, influenceScore, INFLUENCE_TIERS, influenceTierIndex } from './utils/rankings'
 export function dfLocale() {
   return i18n.language.startsWith('el') ? elLocale : enUS
 }
@@ -23,6 +23,8 @@ const FILE_SOUNDS: Record<'pass'|'reject'|'start'|'gavel', string> = {
   reject:'/sounds/reject.wav',
   start: '/sounds/start.wav',
   gavel: '/sounds/gavel.wav',
+  xp:     '/sounds/xp.wav',    // NEW (place a small soft chime here)
+
 };
 
 const VOLUMES: Record<'pass'|'reject'|'start'|'gavel', number> = {
@@ -32,7 +34,7 @@ const VOLUMES: Record<'pass'|'reject'|'start'|'gavel', number> = {
   gavel: 0.50,   // lower gavel so it doesn’t feel like a second pass
 }
 
-async function playSound(kind: 'pass'|'reject'|'start'|'gavel') {
+async function playSound(kind: 'pass'|'reject'|'start'|'gavel'|'xp') {
   try {
     const a = new Audio(FILE_SOUNDS[kind]);
     a.volume = VOLUMES[kind] ?? 0.3
@@ -42,6 +44,26 @@ async function playSound(kind: 'pass'|'reject'|'start'|'gavel') {
     console.warn('Audio play failed:', err);
   }
 }
+
+function useInfluenceGain(name: string | null, state: ServerState | null) {
+  const [flash, setFlash] = React.useState(false)
+  const prev = React.useRef<number | null>(null)
+  const curr = name && state?.users ? (state.users[name]?.influence ?? 0) : 0
+
+  React.useEffect(() => {
+    if (prev.current == null) { prev.current = curr; return }
+    if (curr > (prev.current ?? 0)) {
+      setFlash(true)
+      playSound('xp').catch(()=>{})
+      const t = setTimeout(() => setFlash(false), 900)
+      return () => clearTimeout(t)
+    }
+    prev.current = curr
+  }, [curr])
+
+  return { curr, flash }
+}
+
 
 function StatusBadge({ status }: { status: Proposal['status'] }) {
   const { t } = useTranslation();             // <-- add this
@@ -101,8 +123,20 @@ function LangSwitch() {
   )
 }
 
-function Header({ live, you }: { live: string[], you: You | null }) {
+function Header({
+  live,
+  you,
+  youInfluence,
+  xpFlash
+}: {
+  live: string[],
+  you: You | null,
+  youInfluence: number,
+  xpFlash: boolean
+}) {
   const { t } = useTranslation()
+  const prog = tierProgress(youInfluence)
+
   return (
     <div className="sticky top-0 z-10 bg-white/80 backdrop-blur border-b border-slate-200">
       <div className="mx-auto max-w-6xl px-4 py-3 flex items-center justify-between">
@@ -115,10 +149,20 @@ function Header({ live, you }: { live: string[], you: You | null }) {
             </p>
           </div>
         </div>
-        <div className="flex items-center gap-4">
+
+        <div className="flex items-center gap-4 min-w-[220px]">
           {you && (
-            <div className="text-sm text-slate-600">
-              {you.isAdmin ? t('role.admin') : t('role.member')} — {you.name}
+            <div className="text-sm text-slate-600 w-full">
+              <div>
+                {you.isAdmin ? t('role.admin') : t('role.member')} — {you.name}
+              </div>
+              <div className="mt-1">
+                <XPBar
+                  pct={prog.pct * 100}
+                  flash={xpFlash}
+                  label={`${youInfluence} • ${prog.curr.title}${prog.next ? ` → ${prog.next.title}` : ''}`}
+                />
+              </div>
             </div>
           )}
           <LangSwitch />
@@ -127,6 +171,7 @@ function Header({ live, you }: { live: string[], you: You | null }) {
     </div>
   )
 }
+
 
 
 function Tabs({ tab, setTab }: { tab: TabKey, setTab: (t: TabKey)=>void }) {
@@ -307,54 +352,55 @@ function ProposalsTab({ state, you }:{ state: ServerState, you: You }) {
 
 function RankingsTab({ state, you }:{ state: ServerState; you: You }) {
   const users = Object.values(state.users || {})
-  const sorted = [...users].sort((a,b)=> (netScore(b) - netScore(a)))
+  const sorted = [...users].sort((a,b)=> (influenceScore(b as any) - influenceScore(a as any)))
   return (
     <div className="mx-auto max-w-5xl px-4 mt-6">
       <div className="grid md:grid-cols-2 gap-6">
         <div className="card p-5">
-          <h2 className="text-lg font-semibold mb-4">Leaderboard / Πίνακας Κατάταξης</h2>
+          <h2 className="text-lg font-semibold mb-4">Influence Board / Πίνακας Επιρροής</h2>
           <div className="space-y-3">
             {sorted.map(u => {
-              const score = netScore(u)
-              const idx = tierIndexForScore(score)
-              const tier = TIERS[idx]
+              const score = influenceScore(u as any)
+              const prog = tierProgress(score)
+
               return (
-                <div key={u.name} className="border rounded-xl p-4 flex items-center justify-between">
-                  <div>
+                <div key={u.name} className="border rounded-xl p-4">
+                  <div className="flex items-center justify-between">
                     <div className="font-semibold">{u.name}</div>
-                    <div className="text-xs text-slate-500">Score / Βαθμολογία: <span className="font-medium">{score}</span> (Democracy: {u.democracy || 0}, Tyrant: {u.tyrant || 0})</div>
-                    <div className="text-sm mt-1"><span className="font-medium">{tier.title}</span></div>
-                    <div className="text-xs text-slate-500">{tier.description}</div>
+                    {you?.isAdmin ? (
+                      <button
+                        className="btn bg-rose-600 text-white hover:bg-rose-700"
+                        onClick={() => {
+                          if (confirm(`Delete user "${u.name}"? / Διαγραφή χρήστη "${u.name}";`)) {
+                            ws.deleteUser(u.name)
+                          }
+                        }}
+                      >
+                        Delete
+                      </button>
+                    ) : null}
                   </div>
-  {/** Admin-only delete user */}
-  {state && (state as any) && (/* just to be safe */ true) && (
-    you?.isAdmin ? (
-      <button
-        className="btn bg-rose-600 text-white hover:bg-rose-700"
-        onClick={() => {
-          if (confirm(`Delete user "${u.name}"? / Διαγραφή χρήστη "${u.name}";`)) {
-            ws.deleteUser(u.name)
-          }
-        }}
-      >
-        Delete User / Διαγραφή Χρήστη
-      </button>
-    ) : null
-  )}
 
+                  <div className="mt-2 text-xs text-slate-500 flex items-center justify-between">
+                    <div><span className="font-medium">{score}</span> influence — {prog.curr.title}</div>
+                    <div>{prog.next ? `${prog.toNext} to ${prog.next.title}` : 'Max tier'}</div>
+                  </div>
 
-
+                  <div className="mt-2">
+                    <XPBar pct={prog.pct * 100} />
+                  </div>
                 </div>
               )
             })}
             {sorted.length === 0 && <div className="text-slate-500 text-sm">No members yet. / Δεν υπάρχουν μέλη ακόμα.</div>}
           </div>
         </div>
+
         <div className="card p-5">
           <h2 className="text-lg font-semibold mb-4">Tiers / Βαθμίδες</h2>
           <ol className="list-decimal pl-5 space-y-2 text-sm">
-            {TIERS.map((t, i) => (
-              <li key={i}><span className="font-medium">{t.title}</span> — {t.description}</li>
+            {INFLUENCE_TIERS.map((t, i) => (
+              <li key={i}><span className="font-medium">{t.title}</span> — {t.description} (≥{t.min})</li>
             ))}
           </ol>
         </div>
@@ -362,6 +408,9 @@ function RankingsTab({ state, you }:{ state: ServerState; you: You }) {
     </div>
   )
 }
+
+
+
 function NoActiveSession() {
   const { t } = useTranslation()
   return (
@@ -595,6 +644,7 @@ export default function App() {
   } | null>(null)
   const [preSession, setPreSession] = useState<{ text: string; until: number } | null>(null)
   const [ending, setEnding] = useState<any | null>(null)
+  const { curr: yourInfluence, flash: xpFlash } = useInfluenceGain(you?.name ?? null, state)
 
 
   useEffect(() => {
@@ -740,7 +790,8 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-brand-50/40 to-white">
-      <Header live={live} you={you} />
+      <Header live={live} you={you} youInfluence={yourInfluence} xpFlash={xpFlash} />
+
 
 
 

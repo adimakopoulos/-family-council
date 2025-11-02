@@ -4,10 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="96169513-0ed6-4815-8c8b-f6b36886ee56" name="Changes" comment="clean up,fix sound playing twice">
+    <list default="true" id="96169513-0ed6-4815-8c8b-f6b36886ee56" name="Changes" comment="handle late joiners :)">
+      <change afterPath="$PROJECT_DIR$/web-ui/client/src/components/XPBar.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web-ui/client/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/web-ui/client/src/App.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web-ui/client/src/types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web-ui/client/src/types.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-ui/client/src/utils/rankings.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web-ui/client/src/utils/rankings.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web-ui/server/data/state.json" beforeDir="false" afterPath="$PROJECT_DIR$/web-ui/server/data/state.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web-ui/server/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/web-ui/server/src/index.js" afterDir="false" />
     </list>
@@ -145,7 +147,15 @@
       <option name="project" value="LOCAL" />
       <updated>1762040997868</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="handle late joiners :)">
+      <option name="closed" value="true" />
+      <created>1762042942469</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1762042942469</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -158,6 +168,7 @@
     <MESSAGE value="sound effect and confetti update" />
     <MESSAGE value="sound values, read me updated, easy deploy" />
     <MESSAGE value="clean up,fix sound playing twice" />
-    <option name="LAST_COMMIT_MESSAGE" value="clean up,fix sound playing twice" />
+    <MESSAGE value="handle late joiners :)" />
+    <option name="LAST_COMMIT_MESSAGE" value="handle late joiners :)" />
   </component>
 </project>

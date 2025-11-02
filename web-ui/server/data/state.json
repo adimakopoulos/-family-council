@@ -523,43 +523,147 @@
         "totalVotingMs": 0,
         "firstStartedAt": 1762042532947
       }
+    },
+    {
+      "id": "p_5m8sgfybhfl",
+      "title": "25",
+      "description": "-",
+      "voteDeadline": "2025-11-02T00:46:00.000Z",
+      "author": "alex",
+      "status": "rejected",
+      "createdAt": 1762044411511,
+      "comments": [],
+      "stats": {
+        "rounds": 1,
+        "totalVotingMs": 0,
+        "firstStartedAt": 1762044415121
+      }
+    },
+    {
+      "id": "p_w7w7vmo9vil",
+      "title": "22",
+      "description": "-",
+      "voteDeadline": "2025-11-02T00:47:00.000Z",
+      "author": "alex",
+      "status": "rejected",
+      "createdAt": 1762044435458,
+      "comments": [],
+      "stats": {
+        "rounds": 1,
+        "totalVotingMs": 0,
+        "firstStartedAt": 1762044444315
+      }
+    },
+    {
+      "id": "p_1k7a9jq2tmt",
+      "title": "555",
+      "description": "-",
+      "voteDeadline": "2025-11-02T00:47:00.000Z",
+      "author": "alex",
+      "status": "rejected",
+      "createdAt": 1762044475552,
+      "comments": [],
+      "stats": {
+        "rounds": 1,
+        "totalVotingMs": 0,
+        "firstStartedAt": 1762044480116
+      }
+    },
+    {
+      "id": "p_zpeos5nzekh",
+      "title": "55555",
+      "description": "-",
+      "voteDeadline": "2025-11-02T00:58:00.000Z",
+      "author": "alex",
+      "status": "passed",
+      "createdAt": 1762045106588,
+      "comments": [],
+      "stats": {
+        "rounds": 1,
+        "totalVotingMs": 4468,
+        "firstStartedAt": 1762045113404,
+        "resolvedAt": 1762045117873
+      }
+    },
+    {
+      "id": "p_xggoex4gpu",
+      "title": "44",
+      "description": "-",
+      "voteDeadline": "2025-11-02T00:58:00.000Z",
+      "author": "alex",
+      "status": "passed",
+      "createdAt": 1762045140404,
+      "comments": [],
+      "stats": {
+        "rounds": 1,
+        "totalVotingMs": 2117,
+        "firstStartedAt": 1762045173896,
+        "resolvedAt": 1762045176013
+      }
+    },
+    {
+      "id": "p_wi8kzcaoi5g",
+      "title": "55858",
+      "description": "-",
+      "voteDeadline": "2025-11-02T00:59:00.000Z",
+      "author": "alex",
+      "status": "passed",
+      "createdAt": 1762045143386,
+      "comments": [],
+      "stats": {
+        "rounds": 1,
+        "totalVotingMs": 3283,
+        "firstStartedAt": 1762045181015,
+        "resolvedAt": 1762045184298
+      }
+    },
+    {
+      "id": "p_b42l1tuw7e7",
+      "title": "225",
+      "description": "-",
+      "voteDeadline": "2025-11-02T00:59:00.000Z",
+      "author": "alex",
+      "status": "passed",
+      "createdAt": 1762045145542,
+      "comments": [],
+      "stats": {
+        "rounds": 1,
+        "totalVotingMs": 5125,
+        "firstStartedAt": 1762045189314,
+        "resolvedAt": 1762045194439
+      }
+    },
+    {
+      "id": "p_vwoqv0egd9",
+      "title": "5656",
+      "description": "55",
+      "voteDeadline": "2025-11-02T01:00:00.000Z",
+      "author": "45",
+      "status": "passed",
+      "createdAt": 1762045211430,
+      "comments": [],
+      "stats": {
+        "rounds": 1,
+        "totalVotingMs": 4149,
+        "firstStartedAt": 1762045219463,
+        "resolvedAt": 1762045223612
+      }
     }
   ],
   "users": {
-    "41525": {
-      "name": "41525",
-      "democracy": 0,
-      "tyrant": 0
+    "45": {
+      "name": "45",
+      "influence": 25
     },
     "alex": {
       "name": "alex",
-      "democracy": 210,
-      "tyrant": 60
-    },
-    "bot1": {
-      "name": "bot1",
       "democracy": 0,
-      "tyrant": 0
-    },
-    "bot2": {
-      "name": "bot2",
-      "democracy": 30,
-      "tyrant": 0
-    },
-    "bot5": {
-      "name": "bot5",
-      "democracy": 20,
-      "tyrant": 0
+      "tyrant": 0,
+      "influence": 25
     },
     "Alekos": {
       "name": "Alekos",
-      "democracy": 20,
-      "tyrant": 0
-    },
-    "mpoo": {
-      "name": "mpoo",
-      "democracy": 0,
-      "tyrant": 0
+      "influence": 0
     }
   },
   "settings": {
